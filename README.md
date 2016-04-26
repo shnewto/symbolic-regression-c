@@ -19,7 +19,8 @@ Optional:
 1. Install gnuplot and gnuplot-x11 packages.
 2. Run the plot.p script with`gnuplot plot.p` in the directory where the executable was run and the file results.txt was generated.
 3. View the Best Fitness and Actual function ploted in graph.png 
-4. Tune parameters defined in algorithm.h and see what this thing
+4. Use the -DDEBUG_ON=ON flag with cmake to enable debugging and profiling.
+5. Tune parameters defined in algorithm.h and see what this thing
 can do!
 
 TODO:
