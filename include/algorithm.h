@@ -28,9 +28,9 @@
 
 
 /**
- * @brief Tree size fitness penalty. 
+ * @brief Tree size fitness penalty. This is a pretty extreme penalty.
  */
-#define TREE_DEPTH_PENALTY(tree_size) \
+#define TREE_SIZE_PENALTY(tree_size) \
 ( tree_size * 0.1 ) 
 
 

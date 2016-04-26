@@ -165,7 +165,7 @@ void individual_evaluate(
     }
 
     individual->fitness = sqrt( individual->fitness );
-            + TREE_DEPTH_PENALTY(individual->tree_node_count);
+            + TREE_SIZE_PENALTY(individual->tree_node_count);
 }
 
 
@@ -192,7 +192,6 @@ void individual_crossover(
     GLOBAL_LAST_STEP = 0;
     GLOBAL_STEP_COUNT = 0;
     
-    individual_calc_size( individual_a );
     step_range = individual_a->tree_terminal_count;
     
     if( random_unsigned_long( 100 ) < 90 )
@@ -212,8 +211,6 @@ void individual_crossover(
     
     GLOBAL_STEP_COUNT = 0;
 
-    individual_calc_size( individual_b );
-    
     step_range = individual_b->tree_nonterminal_count;
     
     if( random_unsigned_long( 100 ) < 90 )

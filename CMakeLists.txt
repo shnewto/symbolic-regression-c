@@ -6,10 +6,15 @@ project(
     symbolic-regression
     )
 
+if( DEBUG_ON )
+
+set( DEBUG_FLAGS -pg )
+
+endif()
+
 add_definitions(
-    -std=c99 
-    -p
-    -g
+    -std=c99
+    ${DEBUG_FLAGS}
     )
 
 include_directories(
@@ -26,5 +31,7 @@ add_executable(
 
 target_link_libraries( 
     ${PROJECT_NAME}
-    m 
+    m
+    ${DEBUG_FLAGS}
     )
+
