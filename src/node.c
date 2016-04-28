@@ -270,7 +270,7 @@ void node_walk_terminals(
         exit( EXIT_FAILURE );
     }
     
-    if( GLOBAL_LAST_STEP ==  GLOBAL_STEP_COUNT )
+    if( GLOBAL_LAST_STEP == GLOBAL_STEP_COUNT )
     {
         GLOBAL_STEP_COUNT++;
 
@@ -304,7 +304,7 @@ void node_walk_nonterminals(
         exit( EXIT_FAILURE );
     }    
 
-    if( GLOBAL_LAST_STEP ==  GLOBAL_STEP_COUNT )
+    if( GLOBAL_LAST_STEP == GLOBAL_STEP_COUNT )
     {
         GLOBAL_STEP_COUNT++;
 

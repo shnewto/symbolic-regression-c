@@ -12,7 +12,7 @@ Notes:
 Usage:
 
 1. Build with `cmake && make`
-2. Run with `./symbolic-regression`
+2. Run with `./bin/symbolic-regression`
 
 Optional:
 
