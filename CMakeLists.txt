@@ -6,10 +6,10 @@ project(
     symbolic-regression
     )
 
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+
 if( DEBUG_ON )
-
-set( DEBUG_FLAGS -pg )
-
+    set( DEBUG_FLAGS -pg )
 endif()
 
 add_definitions(
@@ -23,10 +23,10 @@ include_directories(
 
 add_executable(
     ${PROJECT_NAME}
-    src/main.c
-    src/node.c
-    src/individual.c
-    src/population.c
+    ${PROJECT_SOURCE_DIR}/src/main.c
+    ${PROJECT_SOURCE_DIR}/src/node.c
+    ${PROJECT_SOURCE_DIR}/src/individual.c
+    ${PROJECT_SOURCE_DIR}/src/population.c
     )
 
 target_link_libraries( 
@@ -34,4 +34,3 @@ target_link_libraries(
     m
     ${DEBUG_FLAGS}
     )
-
