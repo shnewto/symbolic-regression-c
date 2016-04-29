@@ -88,6 +88,10 @@ void population_free( population_s * population )
     {
         individual_free( population->individuals[ idx ] );
     }
+    
+    free( population );
+    
+    population = NULL;
 }
 
 

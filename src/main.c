@@ -53,12 +53,17 @@ static void generate_data_set(
 //
 int main( )
 {
+    // initialize some pseudo-random numbers
+    // with time as the seed. 
     srand((unsigned) time(NULL));
     
+    // contains input and output data sets. 
     fitness_function_s fitness_function;
 
+    // sanity initialization.
     memset( &fitness_function, 0, sizeof(fitness_function_s) );
 
+    // Record of the x and f(x) values.
     const char data_set_file_name[] = "regression-data-set.txt";
 
     FILE* data_set_stream = fopen( data_set_file_name, "w" );
