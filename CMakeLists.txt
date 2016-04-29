@@ -2,15 +2,6 @@ cmake_minimum_required(
     VERSION 2.8
 )
 
-#if ( ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR} )
-#    message( 
-#        FATAL_ERROR 
-#        "in-source builds disabled. \n"
-#        " CMakeCache.txt."
-#    )
-#    rm -rf CMakeCache.txt
-#endif()
-
 project(
     symbolic-regression
 )
@@ -85,18 +76,6 @@ add_library(
     ${SRCS}
 )
 
-#set_target_properties( 
-#    ${SRC_LIB} PROPERTIES
-#    LIBRARY_OUTPUT_DIRECTORY 
-#    ${CMAKE_CURRENT_SOURCE_DIR}/lib 
-#)
-#
-#set_target_properties( 
-#    ${TEST_LIB} PROPERTIES
-#    LIBRARY_OUTPUT_DIRECTORY 
-#    ${CMAKE_CURRENT_SOURCE_DIR}/lib 
-#)
-
 add_definitions(
     -std=c99
     -fPIC
@@ -134,25 +113,9 @@ target_link_libraries(
     cgreen
 )
 
-SET(
-    EXE_ARG_0 cgreen-runner
-)
-
-SET(
-    EXE_ARG_1 --colours
-)
-
-SET(
-    EXE_ARG_2 ${CMAKE_CURRENT_SOURCE_DIR}/lib/${TEST_LIB_NAME};
-)
-
-#    cgreen-runner --colours ${CMAKE_CURRENT_SOURCE_DIR}/lib/${TEST_LIB_NAME}
-
 add_custom_target(
     test 
-#    COMMAND 
-    execute_process(
-    COMMAND ${EXE_ARG_0} ${EXE_ARG_1} ${EXE_ARG_2}
-    )
+    COMMAND 
+    cgreen-runner --colours ${CMAKE_CURRENT_SOURCE_DIR}/lib/${TEST_LIB_NAME}
 )
 

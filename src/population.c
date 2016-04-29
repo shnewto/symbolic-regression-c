@@ -174,7 +174,7 @@ void population_new_generation(
     unsigned long random_index_a = 0;
     unsigned long random_index_b = 0;
 
-    
+
     population_calc_all( fitness_function, population );
 
     elite_indiviual = individual_alloc();
@@ -206,6 +206,8 @@ void population_new_generation(
     }
 
     population_free( population );    
+    
+    population = population_alloc();    
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
@@ -357,7 +359,7 @@ void population_print_evaluation(
         fprintf( stderr, "bad contenders array in population_print_evaluation\n");
         exit( EXIT_FAILURE );
     }   
-    
+
     population_calc_all( fitness_function, population );
     
     individual_s *best_individual = population_best_get( population );
