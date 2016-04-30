@@ -71,7 +71,7 @@ void population_spawn(
  * the f(x) trees generated.
  */
 void population_free(
-        population_s * population );
+        population_s ** population );
 
 /**
  * @brief Calculates fitness, number of terminal nodes, 

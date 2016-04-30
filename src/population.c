@@ -76,22 +76,21 @@ void population_spawn(
 
 
 //
-void population_free( population_s * population )
+void population_free( population_s ** population )
 {
     if( population == NULL )
     {
-        fprintf( stderr, "bad parameter in population_free\n");
-        exit( EXIT_FAILURE );
+        return;
     } 
     
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        individual_free( population->individuals[ idx ] );
+        individual_free( (*population)->individuals[ idx ] );
     }
     
-    free( population );
+    free( *population );
     
-    population = NULL;
+    *population = NULL;
 }
 
 
@@ -205,7 +204,7 @@ void population_new_generation(
         individual_mutate( new_population->individuals[ idx ] );
     }
 
-    population_free( population );    
+    population_free( &population );    
     
     population = population_alloc();    
 
@@ -234,7 +233,7 @@ void population_new_generation(
     population_calc_all( fitness_function, population );
     
     individual_free( elite_indiviual );
-    population_free( new_population );
+    population_free( &new_population );
 }
 
 

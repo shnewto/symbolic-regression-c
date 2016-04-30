@@ -105,7 +105,7 @@ int main( )
     
     fclose( results_stream );
     
-    population_free( initial_population );
+    population_free( &initial_population );
     
     
     return EXIT_SUCCESS;    

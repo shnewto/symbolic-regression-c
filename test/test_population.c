@@ -23,9 +23,9 @@ Ensure( population, alloc_and_free_succeed )
             population,
             is_not_equal_to(NULL) );
     
-//    population_free( population );
-//    
-//    assert_that(
-//            population, 
-//            is_equal_to(NULL));
+    population_free( &population );
+    
+    assert_that(
+            population, 
+            is_equal_to(NULL));
 }

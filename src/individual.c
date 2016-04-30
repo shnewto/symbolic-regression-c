@@ -56,8 +56,7 @@ void individual_free( individual_s * individual )
 {
     if( individual == NULL )
     {
-        fprintf( stderr, "bad parameter in individual_free\n");
-        exit( EXIT_FAILURE );
+        return;
     }
     
     if( individual->tree_root_node == NULL )
