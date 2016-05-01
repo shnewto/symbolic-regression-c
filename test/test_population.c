@@ -4,15 +4,15 @@
 
 #include "population.h"
 
-Describe(population);
+Describe(population_tests);
 
-BeforeEach(population)
+BeforeEach(population_tests)
 {}
 
-AfterEach(population)
+AfterEach(population_tests)
 {}
 
-Ensure( population, alloc_and_free_succeed )
+Ensure( population_tests, alloc_and_free_succeed )
 {
 
     population_s *population = NULL;

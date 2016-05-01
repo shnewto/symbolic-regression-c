@@ -66,7 +66,7 @@ void individual_spawn(
  * @param [in] population Pointer to \ref individual_s which contains
  * the f(x) tree generated.
  */
-void individual_free( individual_s * individual );
+void individual_free( individual_s ** individual );
 
 
 /**

@@ -123,28 +123,28 @@ void node_copy( node_s * in, node_s * out, node_s * parent )
 
 
 //
-void node_free( node_s * root )
+void node_free( node_s ** root )
 {
-    if( root == NULL )
+    if( (*root) == NULL )
     {
         return;
     }
 
-    if( (root->type == MINIMUM)
-            || (root->type == MAXIMUM)
-            || (root->type == ADD)
-            || (root->type == SUBTRACT) 
-            || (root->type == MULTIPLY)
-            || (root->type == DIVIDE) )
+    if( ((*root)->type == MINIMUM)
+            || ((*root)->type == MAXIMUM)
+            || ((*root)->type == ADD)
+            || ((*root)->type == SUBTRACT) 
+            || ((*root)->type == MULTIPLY)
+            || ((*root)->type == DIVIDE) )
     {
         for( unsigned long idx = 0; idx < MAX_ARITY; ++idx )
         {
-            node_free( root->branches[ idx ] );
+            node_free( &(*root)->branches[ idx ] );
         }
     }
 
-    free( root );
-    root = NULL;
+    free( (*root) );
+    (*root) = NULL;
 }
 
 

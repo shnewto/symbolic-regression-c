@@ -81,10 +81,10 @@ void node_copy(node_s * in, node_s * out, node_s * parent);
 /**
  * @brief Cleans up memory associated with the \ref node_s data.
  * 
- * @param [in] population Pointer to \ref node_s which contains
+ * @param [in] root Pointer to \ref node_s which contains
  * the f(x) tree noed generated.
  */
-void node_free(node_s *); 
+void node_free( node_s ** root ); 
 
 
 /**

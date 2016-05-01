@@ -85,7 +85,7 @@ void population_free( population_s ** population )
     
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        individual_free( (*population)->individuals[ idx ] );
+        individual_free( &(*population)->individuals[ idx ] );
     }
     
     free( *population );
@@ -220,19 +220,19 @@ void population_new_generation(
     random_index_a = random_unsigned_long( POPULATION_SIZE );
     random_index_b = random_unsigned_long( POPULATION_SIZE );
 
-    individual_free( population->individuals[ random_index_a ] );
+    individual_free( &population->individuals[ random_index_a ] );
     population->individuals[ random_index_a ] = individual_alloc();
     
     individual_copy( elite_indiviual, population->individuals[ random_index_a ] );
     
-    individual_free( population->individuals[ random_index_b ] );
+    individual_free( &population->individuals[ random_index_b ] );
     population->individuals[ random_index_b ] = individual_alloc();
     
     individual_copy( elite_indiviual, population->individuals[ random_index_b ] );
 
     population_calc_all( fitness_function, population );
     
-    individual_free( elite_indiviual );
+    individual_free( &elite_indiviual );
     population_free( &new_population );
 }
 

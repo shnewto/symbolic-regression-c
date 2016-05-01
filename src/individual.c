@@ -52,23 +52,17 @@ void individual_spawn(
 
 
 //
-void individual_free( individual_s * individual )
+void individual_free( individual_s ** individual )
 {
-    if( individual == NULL )
+    if( *individual == NULL )
     {
         return;
     }
     
-    if( individual->tree_root_node == NULL )
-    {
-        printf( "bad parameter in individual_free()" );
-        exit( EXIT_FAILURE );
-    }
+    node_free( &(*individual)->tree_root_node );
     
-    node_free( individual->tree_root_node );
-    
-    free( individual );
-    individual = NULL;
+    free( *individual );
+    *individual = NULL;
 }
 
 
@@ -250,5 +244,5 @@ void individual_crossover(
     crossover_node_1 = NULL;
     crossover_node_2 = NULL;
     
-    node_free( temp );
+    node_free( &temp );
 }
