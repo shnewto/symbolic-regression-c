@@ -1,14 +1,14 @@
-cmake_minimum_required(
+CMAKE_MINIMUM_REQUIRED(
     VERSION 2.8
 )
 
-project(
+PROJECT(
     symbolic-regression
 )
 
-if( DEBUG_ON )
-    set( DEBUG_FLAGS -pg )
-endif()
+IF( DEBUG_ON )
+    SET( DEBUG_FLAGS -pg )
+ENDIF()
 
 FILE( 
     GLOB 
@@ -35,7 +35,7 @@ SET(
     ${CMAKE_CURRENT_SOURCE_DIR}/lib
 )
 
-set(
+SET(
     CMAKE_ARCHIVE_OUTPUT_DIRECTORY 
     ${CMAKE_CURRENT_SOURCE_DIR}/lib 
     )
@@ -60,61 +60,62 @@ SET(
     lib${TEST_LIB}.so
 )
 
-include_directories(
+INCLUDE_DIRECTORIES(
     ${INCLUDE_DIR}
 )
 
-add_library(
+ADD_LIBRARY(
     ${TEST_LIB}
     SHARED
     ${TEST_SRCS}
 )
 
-add_library(
+ADD_LIBRARY(
     ${SRC_LIB}
     STATIC
     ${SRCS}
 )
 
-add_definitions(
+ADD_DEFINITIONS(
     -std=c99
     -fPIC
     ${DEBUG_FLAGS}
 )
 
-add_executable(
+ADD_EXECUTABLE(
     ${PROJECT_NAME}
     ${SRCS}
 )
 
-target_include_directories(
+TARGET_INCLUDE_DIRECTORIES(
     ${PROJECT_NAME}
     PUBLIC
     ${INCLUDE_DIR}    
 )
 
-target_link_libraries( 
+TARGET_LINK_LIBRARIES( 
     ${PROJECT_NAME}
     m
     ${DEBUG_FLAGS}
     -fPIC
 )
 
-target_include_directories(
+TARGET_INCLUDE_DIRECTORIES(
     ${TEST_LIB}
     PUBLIC
     ${INCLUDE_DIR}    
     -fPIC
 )
 
-target_link_libraries( 
+TARGET_LINK_LIBRARIES( 
     ${TEST_LIB}
     ${SRC_LIB}
     cgreen
 )
 
-add_custom_target(
-    test 
+ADD_CUSTOM_TARGET(
+    test
+    DEPENDS ${PROJECT_NAME}
     COMMAND 
     cgreen-runner --colours ${CMAKE_CURRENT_SOURCE_DIR}/lib/${TEST_LIB_NAME}
 )
