@@ -6,6 +6,7 @@ PROJECT(
     symbolic-regression
 )
 
+# cmake .. -DDEBUG_ON=true
 IF( DEBUG_ON )
     SET( DEBUG_FLAGS -pg )
 ENDIF()
@@ -50,29 +51,13 @@ SET(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 ) 
 
-SET( 
-    TEST_LIB 
-    test-symbolic-regression-c 
-)
-
-SET(
-    TEST_LIB_NAME
-    lib${TEST_LIB}.so
-)
-
 INCLUDE_DIRECTORIES(
     ${INCLUDE_DIR}
 )
 
 ADD_LIBRARY(
-    ${TEST_LIB}
-    SHARED
-    ${TEST_SRCS}
-)
-
-ADD_LIBRARY(
     ${SRC_LIB}
-    STATIC
+    SHARED
     ${SRCS}
 )
 
@@ -100,23 +85,31 @@ TARGET_LINK_LIBRARIES(
     -fPIC
 )
 
-TARGET_INCLUDE_DIRECTORIES(
-    ${TEST_LIB}
-    PUBLIC
-    ${INCLUDE_DIR}    
-    -fPIC
-)
-
-TARGET_LINK_LIBRARIES( 
-    ${TEST_LIB}
-    ${SRC_LIB}
-    cgreen
-)
+SET( TEST_LIBS )
+FOREACH(TEST_SOURCE_FILE ${TEST_SRCS})
+    get_filename_component( TEST_FILE_NAME ${TEST_SOURCE_FILE} NAME_WE )
+    ADD_LIBRARY( 
+        ${TEST_FILE_NAME}
+        SHARED 
+        ${TEST_SOURCE_FILE} 
+    )
+    TARGET_INCLUDE_DIRECTORIES(
+        ${TEST_FILE_NAME}
+        PUBLIC
+        ${INCLUDE_DIR}    
+    )
+    TARGET_LINK_LIBRARIES( 
+        ${TEST_FILE_NAME}
+        ${SRC_LIB}
+        cgreen
+        -fPIC
+    )
+    LIST(APPEND TEST_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib${TEST_FILE_NAME}.so)
+ENDFOREACH(TEST_SOURCE_FILE)
 
 ADD_CUSTOM_TARGET(
     test
-    DEPENDS ${PROJECT_NAME} ${TEST_LIB}
-    COMMAND 
-    cgreen-runner --colours ${CMAKE_CURRENT_SOURCE_DIR}/lib/${TEST_LIB_NAME}
+    DEPENDS ${PROJECT_NAME}
+    COMMAND     
+    make && cgreen-runner --colours ${TEST_LIBS}
 )
-
