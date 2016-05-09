@@ -246,3 +246,28 @@ void individual_crossover(
     
     node_free( &temp );
 }
+
+
+//
+void individual_print_function(
+        individual_s * individual,
+        FILE * stream )
+{
+    if( (individual == NULL) || (stream == NULL) )
+    {
+        fprintf( stderr, "bad parameter in print_individual_function\n");
+        exit( EXIT_FAILURE );
+    }        
+    
+    individual->fitness = 0;
+
+    fprintf( stream, "f( x )\n" );
+
+    node_print_operations( 
+            individual->tree_root_node,
+            stream,
+            1,
+            (int)individual->tree_node_count / 2 );            
+            
+    fprintf( stream, "\n" );
+}

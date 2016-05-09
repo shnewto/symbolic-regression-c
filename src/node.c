@@ -386,3 +386,85 @@ unsigned long random_unsigned_long_in_range(
        return (max - min +1)*scaled + min;
 
 }
+
+
+//
+void node_print_operations( 
+        node_s * root, 
+        FILE * stream,
+        int level,
+        int size )
+{
+    if( stream == NULL )
+    {
+        fprintf( stderr, "bad parameter in node_print_operation\n" );
+        exit( EXIT_FAILURE );
+    }
+    
+    if( root == NULL )
+    {
+        return;
+    }    
+
+    
+    node_print_operations( root->branches[1], stream, level + 1, size );   
+//    fprintf( stream, "%*s", level, " ");
+
+
+    
+    if( root->type == INPUTX )
+    {   
+        fprintf( stream, "         %*sx\n", level*10 - 10, " " );
+//        fprintf( stream, "%*sx%*s", level, " ", size, "\n" ); 
+        return;
+    }
+
+    if( root->type == CONSTANT )
+    {
+        fprintf( stream, "         %*s%f\n", level*10 - 10, " ", root->constant_value );     
+//        fprintf( stream, "%*s%f%*s", level, " ", root->constant_value, size, "\n" );     
+        return;
+    }        
+    
+    fprintf( stream, "%*s       /\n", level*10, " " );    
+    
+    if( root->type == MINIMUM )
+    {
+        fprintf( stream, "%*sL%d::min::\n", level*10, " ", level );
+//        fprintf( stream, "%*s::min::%*s", level, " ", size, "\n" ); 
+    }
+    else if( root->type == MAXIMUM )
+    {
+        fprintf( stream, "%*sL%d::max::\n", level*10, " ", level );
+//        fprintf( stream, "%*s::max::%*s", level, " ", size, "\n" ); 
+    }
+    else if( root->type == ADD )
+    {
+        fprintf( stream, "%*sL%d::+::\n", level*10, " ", level );  
+//        fprintf( stream, "%*s::+::%*s", level, " ", size, "\n" );   
+    }
+    else if( root->type == SUBTRACT )
+    {
+        fprintf( stream, "%*sL%d::-::\n", level*10, " ", level );    
+//        fprintf( stream, "%*s::-::%*s", level, " ", size, "\n" );    
+    }
+    else if( root->type == MULTIPLY )
+    {
+        fprintf( stream, "%*sL%d::*::\n", level*10, " ", level );
+//        fprintf( stream, "%*s::*::%*s", level, " ", size, "\n" ); 
+    }
+    else if( root->type == DIVIDE )
+    {   
+        fprintf( stream, "%*sL%d::/::\n", level*10, " ", level );
+//        fprintf( stream, "%*s::/::%*s", level, " ", size, "\n" ); 
+    }
+    else
+    {
+        fprintf( stderr, "Error, unknown case in node_print_operation\n" );
+        exit( EXIT_FAILURE );
+    }
+    
+    fprintf( stream, "%*s       \\\n", level*10, " " );
+    
+    node_print_operations( root->branches[0], stream, level + 1, size );
+}

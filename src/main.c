@@ -45,7 +45,7 @@ static void generate_results_table(
  */
 static void generate_data_set(
         fitness_function_s * fitness_function,
-        FILE* stream );
+        FILE * stream );
 
 
 
@@ -104,6 +104,26 @@ int main( )
             results_stream );
     
     fclose( results_stream );
+ 
+    const char function_filename[] =
+    "function.txt";    
+    
+    FILE * function_stream = NULL;
+    
+    function_stream = fopen( function_filename, "w" );
+    
+    if( function_stream == NULL )
+    {
+        fprintf( stderr, "failed to open %s\n", function_filename );
+        
+        exit( EXIT_FAILURE );
+    }    
+    
+    individual_print_function( 
+            population_best_get(&initial_population),
+            function_stream );    
+    
+    fclose( function_stream );    
     
     population_free( &initial_population );
     
