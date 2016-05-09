@@ -50,13 +50,13 @@
 /**
  * @breif Number of f(x) trees in population.
  */
-#define POPULATION_SIZE (200) 
+#define POPULATION_SIZE (50) 
 
 
 /**
  * @brief Number of iterations to evolve new populations over.
  */
-#define GENERATIONS (200)
+#define GENERATIONS (50)
 
 
 /**

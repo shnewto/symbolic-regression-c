@@ -7,12 +7,11 @@ Notes:
 
 - Perfect fitness == 0.0. The higher the fitness value the less fit the individual.
 
-- This may take time. Out of box, expect 20 - 60 seconds before the program finishes.
-
 Usage:
 
 1. Build with `cmake && make`
 2. Run with `./bin/symbolic-regression`
+3. View best function's tree in function.txt after running.
 
 Optional:
 

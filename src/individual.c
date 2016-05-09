@@ -266,8 +266,7 @@ void individual_print_function(
     node_print_operations( 
             individual->tree_root_node,
             stream,
-            1,
-            (int)individual->tree_node_count / 2 );            
+            1 );            
             
     fprintf( stream, "\n" );
 }
