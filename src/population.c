@@ -13,7 +13,7 @@
 population_s * population_alloc( )
 {
     unsigned long idx;
-
+    unsigned int break_flag = 0;
 
     for( idx = 0; idx < GLOBAL_POPULATION_MEMORY_TABLE_SIZE; ++idx )
     {
@@ -29,10 +29,19 @@ population_s * population_alloc( )
             }
 
             GLOBAL_POPULATION_MEMORY_TABLE[idx]->memory_index = idx;
+            break_flag = 1;
             break;
         }
     }
 
+    // something went wrong and we
+    // ran out of space, no room to alloc a new population.
+    if( break_flag == 0 )
+    {
+        graceful_exit( EXIT_FAILURE );
+    }
+
+    
     return GLOBAL_POPULATION_MEMORY_TABLE[idx];
 }
 
