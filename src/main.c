@@ -27,7 +27,7 @@
  */
 static void generate_results_table( 
         fitness_function_s fitness_function,
-        population_s * population, 
+        population_ref * population, 
         FILE* stream );
 
 
@@ -53,12 +53,17 @@ static void generate_data_set(
 //
 int main( )
 {
+    // initialize some pseudo-random numbers
+    // with time as the seed. 
     srand((unsigned) time(NULL));
     
+    // contains input and output data sets. 
     fitness_function_s fitness_function;
 
+    // sanity initialization.
     memset( &fitness_function, 0, sizeof(fitness_function_s) );
 
+    // Record of the x and f(x) values.
     const char data_set_file_name[] = "regression-data-set.txt";
 
     FILE* data_set_stream = fopen( data_set_file_name, "w" );
@@ -77,7 +82,7 @@ int main( )
 
     initial_population = population_alloc();
     
-    population_evolve( fitness_function, initial_population );
+    population_evolve( fitness_function, &initial_population );
 
     const char results_filename[] =
     "results.txt";
@@ -95,12 +100,12 @@ int main( )
     
     generate_results_table( 
             fitness_function, 
-            initial_population, 
+            &initial_population, 
             results_stream );
     
     fclose( results_stream );
     
-    population_free( initial_population );
+    population_free( &initial_population );
     
     
     return EXIT_SUCCESS;    
@@ -110,10 +115,10 @@ int main( )
 //
 static void generate_results_table( 
         fitness_function_s fitness_function,
-        population_s * population, 
+        population_ref * population, 
         FILE* stream )
 {
-    if( (population == NULL) || (stream == NULL) )
+    if( ((*population) == NULL) || (stream == NULL) )
     {
         fprintf( stderr, "bad parameter in generate_results_table\n");
         exit( EXIT_FAILURE );

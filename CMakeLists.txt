@@ -1,36 +1,115 @@
-cmake_minimum_required(
+CMAKE_MINIMUM_REQUIRED(
     VERSION 2.8
-    )
+)
 
-project(
+PROJECT(
     symbolic-regression
+)
+
+# cmake .. -DDEBUG_ON=true
+IF( DEBUG_ON )
+    SET( DEBUG_FLAGS -pg )
+ENDIF()
+
+FILE( 
+    GLOB 
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h 
+) 
+
+FILE( 
+    GLOB 
+    SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c INCLUDES
+) 
+
+FILE( 
+    GLOB 
+    TEST_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c 
+)
+
+SET(
+    SRC_LIB
+    symbolic-regression-lib
+)
+
+SET(
+    CMAKE_LIBRARY_OUTPUT_DIRECTORY 
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib
+)
+
+SET(
+    CMAKE_ARCHIVE_OUTPUT_DIRECTORY 
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib 
     )
 
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+SET(
+    CMAKE_RUNTIME_OUTPUT_DIRECTORY 
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin
+)
 
-if( DEBUG_ON )
-    set( DEBUG_FLAGS -pg )
-endif()
+SET( 
+    INCLUDE_DIR 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+) 
 
-add_definitions(
+INCLUDE_DIRECTORIES(
+    ${INCLUDE_DIR}
+)
+
+ADD_LIBRARY(
+    ${SRC_LIB}
+    SHARED
+    ${SRCS}
+)
+
+ADD_DEFINITIONS(
     -std=c99
+    -fPIC
     ${DEBUG_FLAGS}
-    )
+)
 
-include_directories(
-    include
-    )
-
-add_executable(
+ADD_EXECUTABLE(
     ${PROJECT_NAME}
-    ${PROJECT_SOURCE_DIR}/src/main.c
-    ${PROJECT_SOURCE_DIR}/src/node.c
-    ${PROJECT_SOURCE_DIR}/src/individual.c
-    ${PROJECT_SOURCE_DIR}/src/population.c
-    )
+    ${SRCS}
+)
 
-target_link_libraries( 
+TARGET_INCLUDE_DIRECTORIES(
+    ${PROJECT_NAME}
+    PUBLIC
+    ${INCLUDE_DIR}    
+)
+
+TARGET_LINK_LIBRARIES( 
     ${PROJECT_NAME}
     m
     ${DEBUG_FLAGS}
+    -fPIC
+)
+
+SET( TEST_LIBS )
+FOREACH(TEST_SOURCE_FILE ${TEST_SRCS})
+    get_filename_component( TEST_FILE_NAME ${TEST_SOURCE_FILE} NAME_WE )
+    ADD_LIBRARY( 
+        ${TEST_FILE_NAME}
+        SHARED 
+        ${TEST_SOURCE_FILE} 
     )
+    TARGET_INCLUDE_DIRECTORIES(
+        ${TEST_FILE_NAME}
+        PUBLIC
+        ${INCLUDE_DIR}    
+    )
+    TARGET_LINK_LIBRARIES( 
+        ${TEST_FILE_NAME}
+        ${SRC_LIB}
+        cgreen
+        -fPIC
+    )
+    LIST(APPEND TEST_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib${TEST_FILE_NAME}.so)
+ENDFOREACH(TEST_SOURCE_FILE)
+
+ADD_CUSTOM_TARGET(
+    test
+    DEPENDS ${PROJECT_NAME}
+    COMMAND     
+    make && cgreen-runner --colours ${TEST_LIBS}
+)
