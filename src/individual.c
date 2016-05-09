@@ -160,6 +160,11 @@ void individual_evaluate(
 
     individual->fitness = sqrt( individual->fitness );
             + TREE_SIZE_PENALTY(individual->tree_node_count);
+
+    if( individual->tree_node_count > MAX_TREE_NODE_COUNT )
+    {
+        individual->fitness += individual->tree_node_count;
+    }
 }
 
 

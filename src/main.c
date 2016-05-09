@@ -130,7 +130,8 @@ int main( )
 
     population_free( &initial_population );
 
-    
+    release_global_memory();
+
     return EXIT_SUCCESS;
 }
 
@@ -182,7 +183,7 @@ static void generate_data_set(
     unsigned long * idx = &fitness_function->data_point_count;
     (*idx) = 0;
 
-    for( double x = range_min; x < range_max; x += step )
+    for( double x = DATA_SET_RANGE_MIN; x < DATA_SET_RANGE_MAX; x += DATA_SET_RANGE_STEP )
     {
         fitness_function->input[ (*idx) ] = x; // x
 
