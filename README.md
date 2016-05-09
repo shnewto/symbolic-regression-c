@@ -26,7 +26,7 @@ TODO:
 
 1. Extend tests for more coverage. 
 2. Optimize the hell out of this.
-3. Convert documentation to Markdown.
+3. Convert documentation to Markdown?
 4. Add some more sophistication to global memory management.
 5. Tune.
 6. Add command line options for a range of preset functions?
