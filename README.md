@@ -33,6 +33,7 @@ TODO:
 7. Add command line help string.
 
 Notes:
+
 - This can be a beast with the right data set. For instance, with the 
 current data set, running with a population size of 1000 individuals for 1000 generations 
 may take something like an hour to run to completion. 
