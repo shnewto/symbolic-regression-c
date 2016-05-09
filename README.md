@@ -31,6 +31,7 @@ TODO:
 5. Tune.
 6. Add command line options for a range of preset functions?
 7. Add command line help string.
+8. Generalize beyond symbolic regression. Next step add the ability to run the Sante Fe Trail problem as well.
 
 Notes:
 
