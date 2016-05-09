@@ -35,6 +35,6 @@ TODO:
 
 Notes:
 
-- This can be a beast with the right configuration. For instance, with the 
-current data set, running with a population size of 1000 individuals for 1000 generations 
-may take something like an hour to run to completion. 
+- This can be a beast with the right configuration. There is a heavy penalty for
+trees with more than 512 nodes. Without that penalty expect execution time to grow incredibly 
+fast with large data sets, populations sizes or numbers of generations.

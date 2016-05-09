@@ -16,9 +16,9 @@
 /**
  * Maybe a more intersting function.
  * Here f(x) --> sin(x) * cos(x) * x^3
- * #define FUNCTION(value) \
- * ( ( sin(x) * cos(x) * x * x * x ) )
- */
+ */ 
+//#define FUNCTION(value) \
+//( ( sin(x) * cos(x) * x * x * x ) )
 
 
 /**
@@ -63,6 +63,32 @@
  * @brief Max arity of nodes in tree.
  */
 #define MAX_ARITY (2)
+
+
+/**
+ * @brief The size at which an individual's tree becomes heavily 
+ * penalized for its size.
+ */
+#define MAX_TREE_NODE_COUNT (512)
+
+
+/**
+ * Defines minimum value in the range of the fitness f(x). 
+ */
+#define DATA_SET_RANGE_MIN (-6)
+
+
+/**
+ * Defines maximum value in the range of the fitness f(x). 
+ */
+#define DATA_SET_RANGE_MAX (6)
+
+
+/**
+ * Defines step size in points between min and max in the range 
+ * of the fitness f(x). 
+ */
+#define DATA_SET_RANGE_STEP (1)
 
 
 /**
