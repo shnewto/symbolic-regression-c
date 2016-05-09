@@ -192,6 +192,13 @@ unsigned long random_unsigned_long_in_range(
         unsigned long max );
 
 
+void node_print_operations( 
+        node_s * root, 
+        FILE * stream,
+        int level,
+        int size );
+
+
 
 
 #endif //NODE_H

@@ -135,4 +135,12 @@ void individual_crossover(
 
 
 
+//
+void individual_print_function(
+        individual_s * individual,
+        FILE * stream );
+
+
+
+
 #endif //INDIVIDUAL_H
