@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "population.h"
+#include "global_memory.h"
 
 
 
@@ -11,15 +12,37 @@
 //
 population_s * population_alloc( )
 {
-    population_s *population = (population_s*)calloc( 1, sizeof(population_s) );
+    unsigned long idx;
+    unsigned int break_flag = 0;
 
-    if( population == NULL )
+    for( idx = 0; idx < GLOBAL_POPULATION_MEMORY_TABLE_SIZE; ++idx )
     {
-        fprintf( stderr, "calloc failed in population_alloc\n");
-        exit( EXIT_FAILURE );
+        if( GLOBAL_POPULATION_MEMORY_TABLE[idx] == NULL )
+        {
+             GLOBAL_POPULATION_MEMORY_TABLE[idx] =
+                     (population_s*)calloc( 1, sizeof(population_s) );
+
+            if( GLOBAL_POPULATION_MEMORY_TABLE[idx] == NULL )
+            {
+                fprintf( stderr, "calloc failed in population_alloc\n");
+                exit( EXIT_FAILURE );
+            }
+
+            GLOBAL_POPULATION_MEMORY_TABLE[idx]->memory_index = idx;
+            break_flag = 1;
+            break;
+        }
     }
 
-    return population;
+    // something went wrong and we
+    // ran out of space, no room to alloc a new population.
+    if( break_flag == 0 )
+    {
+        graceful_exit( EXIT_FAILURE );
+    }
+
+    
+    return GLOBAL_POPULATION_MEMORY_TABLE[idx];
 }
 
 
@@ -31,7 +54,7 @@ void population_evolve(
     if( population == NULL )
     {
         fprintf( stderr, "bad parameter in population_evolve\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     population_spawn( population );
@@ -62,10 +85,10 @@ void population_evolve(
 void population_spawn(
         population_ref * population )
 {
-    if( population == NULL )
+    if( *population == NULL )
     {
         fprintf( stderr, "bad parameter in population_spawn\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
@@ -85,14 +108,19 @@ void population_free( population_ref * population )
         return;
     }
 
+    unsigned long memory_index = (*population)->memory_index;
+
+
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        individual_free( &(*population)->individuals[ idx ] );
+        individual_free(
+                &GLOBAL_POPULATION_MEMORY_TABLE[ memory_index ]->individuals[ idx ] );
     }
 
-    free( *population );
+    free( GLOBAL_POPULATION_MEMORY_TABLE[ memory_index ] );
 
-    *population = NULL;
+    GLOBAL_POPULATION_MEMORY_TABLE[ memory_index ] = NULL;
+    (*population) = NULL;
 }
 
 
@@ -103,7 +131,7 @@ individual_s * population_tournament(
     if( contenders == NULL )
     {
         fprintf( stderr, "bad parameter in population_tournament\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     unsigned long best_idx = 0;
@@ -114,7 +142,7 @@ individual_s * population_tournament(
         if( contenders[ idx ] == NULL )
         {
             fprintf( stderr, "bad contenders array in population_tournament\n");
-            exit( EXIT_FAILURE );
+            graceful_exit( EXIT_FAILURE );
         }
 
         // smallest number == best fitness
@@ -142,7 +170,7 @@ void population_calc_all(
     if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_calc_all\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
@@ -161,7 +189,7 @@ void population_new_generation(
     if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_new_generation\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     population_s * new_population = NULL;
@@ -232,6 +260,7 @@ void population_new_generation(
     population_calc_all( fitness_function, population );
 
     individual_free( &elite_indiviual );
+
     population_free( &new_population );
 }
 
@@ -243,7 +272,7 @@ individual_s * population_best_get(
     if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_best_get\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     double temp;
@@ -274,7 +303,7 @@ unsigned long population_avg_size_get(
     if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_avg_size_get\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     double sum = 0.0;
@@ -299,7 +328,7 @@ unsigned long population_max_size_get(
     if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_max_size_get\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     unsigned long temp;
@@ -325,10 +354,10 @@ unsigned long population_max_size_get(
 unsigned long population_min_size_get(
         population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_min_size_get\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     unsigned long temp = 0;
@@ -358,7 +387,7 @@ void population_print_evaluation(
     if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_print_evaluation\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     population_calc_all( fitness_function, population );
@@ -384,7 +413,7 @@ void population_avg_print( population_ref * population )
     if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_avg_print\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     double sum = 0.0;

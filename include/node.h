@@ -161,8 +161,8 @@ void node_mutate( node_s * root );
 /**
  * @brief Utility function.
  * 
- * @param min
- * @param max
+ * @param [in] min
+ * @param [out] max
  * 
  * @return random number 
  */
@@ -172,7 +172,7 @@ double random_double_in_range( double min, double max );
 /**
  * @brief Utility function.
  * 
- * @param mod_value i.e, rand() % mod_value.
+ * @param [in] mod_value i.e, rand() % mod_value.
  * 
  * @return random number 
  */
@@ -182,8 +182,8 @@ unsigned long random_unsigned_long( unsigned long mod_value );
 /**
  * @brief Utility function.
  * 
- * @param min
- * @param max
+ * @param [in] min
+ * @param [in] max
  * 
  * @return random number 
  */
@@ -192,6 +192,13 @@ unsigned long random_unsigned_long_in_range(
         unsigned long max );
 
 
+/**
+ * @brief Recursive function to print operations associated with each node.
+ * 
+ * @param [in] root A pointer to \ref node_s whose operation is printed.
+ * @param [in] stream File * to write operations to.
+ * @param [in] level Positive number representing level of tree depth where root is 1.
+ */
 void node_print_operations( 
         node_s * root, 
         FILE * stream,

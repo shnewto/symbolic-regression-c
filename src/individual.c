@@ -6,6 +6,7 @@
 #include "algorithm.h"
 #include "node.h"
 #include "individual.h"
+#include "global_memory.h"
 
 
 
@@ -18,7 +19,7 @@ individual_s * individual_alloc( )
     if( individual == NULL )
     {
         fprintf( stderr, "calloc failed in individual_alloc\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     return individual;
@@ -32,7 +33,7 @@ void individual_spawn(
     if( individual == NULL )
     {
         fprintf( stderr, "bad parameter in individual_spawn\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     individual->tree_root_node = node_alloc();
@@ -72,7 +73,7 @@ void individual_copy( individual_s * in, individual_s * out )
     if( (in == NULL) || (out == NULL) )
     {
         fprintf( stderr, "bad param in individual_copy" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     out->tree_root_node = node_alloc();
@@ -93,7 +94,7 @@ unsigned long individual_calc_size(
     if( individual == NULL )
     {
         fprintf( stderr, "bad parameter in individual_calc_size\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     individual->tree_node_count = 1; // at least a root node
@@ -122,7 +123,7 @@ void individual_mutate( individual_s * individual )
     if( individual == NULL )
     {
         fprintf( stderr, "bad parameter in individual_mutate\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     node_mutate( individual->tree_root_node );
@@ -137,7 +138,7 @@ void individual_evaluate(
     if( individual == NULL )
     {
         fprintf( stderr, "bad parameter in individual_evaluate\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
 
@@ -170,7 +171,7 @@ void individual_crossover(
     if( (individual_a == NULL) || (individual_b == NULL) )
     {
         fprintf( stderr, "bad parameter in individual_crossover\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     node_s *temp = NULL;
@@ -225,7 +226,7 @@ void individual_crossover(
     {
         fprintf( stderr,
                 "bad crossover_node_1 pointer in individual_crossover\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     node_copy( crossover_node_1, temp, crossover_node_1->parent );
@@ -234,7 +235,7 @@ void individual_crossover(
     {
         fprintf( stderr, "bad "
                 "crossover_node_2 pointer in individual_crossover\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     node_copy( crossover_node_2, crossover_node_1, crossover_node_2->parent );
@@ -256,7 +257,7 @@ void individual_print_function(
     if( (individual == NULL) || (stream == NULL) )
     {
         fprintf( stderr, "bad parameter in print_individual_function\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     individual->fitness = 0;
