@@ -14,19 +14,19 @@
 individual_s * individual_alloc( )
 {
     individual_s *individual = (individual_s*)calloc( 1, sizeof(individual_s) );
-    
+
     if( individual == NULL )
     {
         fprintf( stderr, "calloc failed in individual_alloc\n");
         exit( EXIT_FAILURE );
-    }    
-    
+    }
+
     return individual;
 }
 
 
 //
-void individual_spawn( 
+void individual_spawn(
         individual_s * individual )
 {
     if( individual == NULL )
@@ -34,18 +34,18 @@ void individual_spawn(
         fprintf( stderr, "bad parameter in individual_spawn\n");
         exit( EXIT_FAILURE );
     }
-        
+
     individual->tree_root_node = node_alloc();
     individual->fitness = 0;
     individual->tree_node_count = 1;
     individual->tree_nonterminal_count = 0;
-    individual->tree_terminal_count = 0;    
-    
-    node_s *parent = NULL;    
+    individual->tree_terminal_count = 0;
+
+    node_s *parent = NULL;
     unsigned long current_depth = 0;
-    
-    generate_full_tree( 
-            individual->tree_root_node, 
+
+    generate_full_tree(
+            individual->tree_root_node,
             current_depth,
             parent );
 }
@@ -58,9 +58,9 @@ void individual_free( individual_s ** individual )
     {
         return;
     }
-    
+
     node_free( &(*individual)->tree_root_node );
-    
+
     free( *individual );
     *individual = NULL;
 }
@@ -74,7 +74,7 @@ void individual_copy( individual_s * in, individual_s * out )
         fprintf( stderr, "bad param in individual_copy" );
         exit( EXIT_FAILURE );
     }
-    
+
     out->tree_root_node = node_alloc();
 
     node_copy( in->tree_root_node, out->tree_root_node, NULL );
@@ -87,27 +87,27 @@ void individual_copy( individual_s * in, individual_s * out )
 
 
 //
-unsigned long individual_calc_size( 
+unsigned long individual_calc_size(
         individual_s * individual )
 {
     if( individual == NULL )
     {
         fprintf( stderr, "bad parameter in individual_calc_size\n");
         exit( EXIT_FAILURE );
-    }    
-    
+    }
+
     individual->tree_node_count = 1; // at least a root node
     individual->tree_terminal_count = 0;
     individual->tree_nonterminal_count = 0;
-    
+
     unsigned long terminal_nodes = 0;
     unsigned long nonterminal_nodes = 0;
-    
+
     node_calc_size(
             individual->tree_root_node,
             &terminal_nodes,
             &nonterminal_nodes );
-    
+
     individual->tree_node_count += terminal_nodes + nonterminal_nodes;
     individual->tree_terminal_count = terminal_nodes;
     individual->tree_nonterminal_count = nonterminal_nodes;
@@ -123,14 +123,14 @@ void individual_mutate( individual_s * individual )
     {
         fprintf( stderr, "bad parameter in individual_mutate\n");
         exit( EXIT_FAILURE );
-    }    
-    
+    }
+
     node_mutate( individual->tree_root_node );
 }
 
 
 //
-void individual_evaluate( 
+void individual_evaluate(
         fitness_function_s fitness_function,
         individual_s * individual )
 {
@@ -138,9 +138,9 @@ void individual_evaluate(
     {
         fprintf( stderr, "bad parameter in individual_evaluate\n");
         exit( EXIT_FAILURE );
-    }        
-    
-    
+    }
+
+
     double output;
 
 
@@ -149,7 +149,7 @@ void individual_evaluate(
     for( unsigned long idx = 0; idx < fitness_function.data_point_count; ++idx )
     {
         // evaluate function on each input point
-        output = node_evaluate( 
+        output = node_evaluate(
                 individual->tree_root_node,
                 fitness_function.input[ idx ] );
 
@@ -172,24 +172,24 @@ void individual_crossover(
         fprintf( stderr, "bad parameter in individual_crossover\n" );
         exit( EXIT_FAILURE );
     }
-    
+
     node_s *temp = NULL;
-    
+
     temp = node_alloc();
 
     node_s *crossover_node_1 = NULL;
     node_s *crossover_node_2 = NULL;
-    
+
     unsigned long step_range = 0;
 
     GLOBAL_LAST_STEP = 0;
     GLOBAL_STEP_COUNT = 0;
-    
+
     step_range = individual_a->tree_terminal_count - 1;
-    
+
     if( random_unsigned_long( 100 ) < 90 )
     {
-        GLOBAL_LAST_STEP 
+        GLOBAL_LAST_STEP
                 = (int)random_unsigned_long_in_range( 2, step_range );
 
         node_walk_nonterminals( individual_a->tree_root_node, &crossover_node_1 );
@@ -201,29 +201,29 @@ void individual_crossover(
 
         node_walk_terminals( individual_a->tree_root_node, &crossover_node_1 );
     }
-    
+
     GLOBAL_STEP_COUNT = 0;
 
     step_range = individual_b->tree_nonterminal_count - 1;
-    
+
     if( random_unsigned_long( 100 ) < 90 )
     {
         GLOBAL_LAST_STEP
                 = (int)random_unsigned_long_in_range( 2, step_range );
-        
+
         node_walk_nonterminals( individual_b->tree_root_node, &crossover_node_2 );
     }
     else
     {
         GLOBAL_LAST_STEP
                 = (int)random_unsigned_long_in_range( 2, step_range );
-        
+
         node_walk_terminals( individual_b->tree_root_node, &crossover_node_2 );
     }
 
     if( crossover_node_1 == NULL )
     {
-        fprintf( stderr, 
+        fprintf( stderr,
                 "bad crossover_node_1 pointer in individual_crossover\n" );
         exit( EXIT_FAILURE );
     }
@@ -238,12 +238,12 @@ void individual_crossover(
     }
 
     node_copy( crossover_node_2, crossover_node_1, crossover_node_2->parent );
-    
+
     node_copy( temp, crossover_node_2, temp->parent );
 
     crossover_node_1 = NULL;
     crossover_node_2 = NULL;
-    
+
     node_free( &temp );
 }
 
@@ -257,17 +257,16 @@ void individual_print_function(
     {
         fprintf( stderr, "bad parameter in print_individual_function\n");
         exit( EXIT_FAILURE );
-    }        
-    
+    }
+
     individual->fitness = 0;
 
     fprintf( stream, "f( x )\n" );
 
-    node_print_operations( 
+    node_print_operations(
             individual->tree_root_node,
             stream,
-            1,
-            (int)individual->tree_node_count / 2 );            
-            
+            1 );
+
     fprintf( stream, "\n" );
 }

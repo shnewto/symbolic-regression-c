@@ -195,8 +195,7 @@ unsigned long random_unsigned_long_in_range(
 void node_print_operations( 
         node_s * root, 
         FILE * stream,
-        int level,
-        int size );
+        int level );
 
 
 

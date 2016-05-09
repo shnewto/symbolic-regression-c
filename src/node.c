@@ -1,6 +1,6 @@
 
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 
 #include "node.h"
 
@@ -17,7 +17,7 @@ node_s * node_alloc( )
         fprintf( stderr, "calloc failed in node_alloc\n");
         exit( EXIT_FAILURE );
     }
-    
+
     return node;
 }
 
@@ -51,21 +51,21 @@ void generate_full_tree(
     node_spawn( root );
 
     root->parent = parent;// point to parent node
-    
+
     if( depth > INITIAL_TREE_DEPTH )
     {
         fprintf( stderr, "bad recursion in generate_full_tree\n" );
     }
-    
+
     if( depth == INITIAL_TREE_DEPTH ) // if at max depth put in terminal
     {
         root->type = random_unsigned_long( TERMINAL_COUNT )
-                + TERMINAL_OFFSET;  
+                + TERMINAL_OFFSET;
 
         if ( root->type == CONSTANT ) // if a constant include a value
         {
-            root->constant_value = random_double_in_range( -CONSTANT_VALUE_LIMIT, CONSTANT_VALUE_LIMIT ); 
-        }        
+            root->constant_value = random_double_in_range( -CONSTANT_VALUE_LIMIT, CONSTANT_VALUE_LIMIT );
+        }
     }
     else // else add non-terminal
     {
@@ -75,7 +75,7 @@ void generate_full_tree(
                 || (root->type == MAXIMUM)
                 || (root->type == ADD)
                 || (root->type == SUBTRACT)
-                || (root->type == MULTIPLY) 
+                || (root->type == MULTIPLY)
                 || (root->type == DIVIDE) )
         {
             for( unsigned long idx = 0; idx < MAX_ARITY; ++idx )
@@ -105,7 +105,7 @@ void node_copy( node_s * in, node_s * out, node_s * parent )
         fprintf( stderr, "bad parameter in node_copy\n" );
         exit( EXIT_FAILURE );
     }
-           
+
     out->type = in->type;
     out->constant_value = in->constant_value;
     out->parent = parent;
@@ -133,7 +133,7 @@ void node_free( node_s ** root )
     if( ((*root)->type == MINIMUM)
             || ((*root)->type == MAXIMUM)
             || ((*root)->type == ADD)
-            || ((*root)->type == SUBTRACT) 
+            || ((*root)->type == SUBTRACT)
             || ((*root)->type == MULTIPLY)
             || ((*root)->type == DIVIDE) )
     {
@@ -156,7 +156,7 @@ double node_evaluate( node_s * root, double input_x )
         fprintf( stderr, "bad parameter in node_evaluate\n" );
         exit( EXIT_FAILURE );
     }
-    
+
     /* evaluates the tree , for a given X. */
     double left_branch = 0.0;
     double right_branch = 0.0;
@@ -231,9 +231,9 @@ double node_evaluate( node_s * root, double input_x )
 
 
 //
-void node_calc_size( 
-        node_s * root, 
-        unsigned long * terminals, 
+void node_calc_size(
+        node_s * root,
+        unsigned long * terminals,
         unsigned long * nonterminals )
 {
     if( (root == NULL) || (terminals == NULL) || (nonterminals == NULL) )
@@ -241,9 +241,9 @@ void node_calc_size(
         fprintf( stderr, "bad parameter in node_calc_size\n" );
         exit( EXIT_FAILURE );
     }
-    
+
     if( (root->type == INPUTX) || (root->type == CONSTANT) )
-    { 
+    {
         (*terminals)++;
     }
     else
@@ -255,13 +255,13 @@ void node_calc_size(
             node_calc_size( root->branches[ idx ], terminals, nonterminals );
         }
     }
-    
+
 }
 
 
 //
 void node_walk_terminals(
-        node_s * node, 
+        node_s * node,
         node_s ** target )
 {
     if( node == NULL )
@@ -269,13 +269,13 @@ void node_walk_terminals(
         fprintf( stderr, "bad parameter in node_walk_terms\n" );
         exit( EXIT_FAILURE );
     }
-    
+
     if( GLOBAL_LAST_STEP == GLOBAL_STEP_COUNT )
     {
         GLOBAL_STEP_COUNT++;
 
-        *target = node;            
-        
+        *target = node;
+
         return;
     }
 
@@ -295,32 +295,32 @@ void node_walk_terminals(
 
 //
 void node_walk_nonterminals(
-        node_s * node, 
+        node_s * node,
         node_s ** target )
 {
     if( node == NULL )
     {
         fprintf( stderr, "bad parameter in node_walk_terms\n" );
         exit( EXIT_FAILURE );
-    }    
+    }
 
     if( GLOBAL_LAST_STEP == GLOBAL_STEP_COUNT )
     {
         GLOBAL_STEP_COUNT++;
 
-        *target = node;            
-        
+        *target = node;
+
         return;
     }
-    
+
     if( (node->type != INPUTX) && (node->type != CONSTANT) )
     {
         for( unsigned long idx = 0;idx < MAX_ARITY;++idx )
         {
             GLOBAL_STEP_COUNT++;
-            
-            node_walk_nonterminals( 
-                    node->branches[ idx ], 
+
+            node_walk_nonterminals(
+                    node->branches[ idx ],
                     target );
         }
     }
@@ -335,18 +335,18 @@ void node_mutate( node_s *root )
         fprintf( stderr, "bad parameter in node_mutate\n" );
         exit( EXIT_FAILURE );
     }
-    
+
     if( random_unsigned_long( 100 ) < MUTATE_PROBABILITY )
     {
         if( (root->type == CONSTANT) || (root->type == INPUTX) )
-        { 
-            root->type = random_unsigned_long( TERMINAL_COUNT ) 
+        {
+            root->type = random_unsigned_long( TERMINAL_COUNT )
                     + TERMINAL_OFFSET;
 
             if( root->type == CONSTANT )
             {
                 root->constant_value = random_double_in_range( -CONSTANT_VALUE_LIMIT, CONSTANT_VALUE_LIMIT );
-            }                
+            }
         }
         else
         {
@@ -356,15 +356,15 @@ void node_mutate( node_s *root )
             {
                 node_mutate( root->branches[ idx ] );
             }
-        }        
-    }   
+        }
+    }
 }
 
 
 //
 double random_double_in_range( double min, double max )
 {
-    return ( ((double)rand() * ( max - min )) 
+    return ( ((double)rand() * ( max - min ))
             / (double)RAND_MAX + min );
 }
 
@@ -377,8 +377,8 @@ unsigned long random_unsigned_long( unsigned long mod_value )
 
 
 //
-unsigned long random_unsigned_long_in_range( 
-        unsigned long min, 
+unsigned long random_unsigned_long_in_range(
+        unsigned long min,
         unsigned long max )
 {
        double scaled = (double)rand()/RAND_MAX;
@@ -389,82 +389,73 @@ unsigned long random_unsigned_long_in_range(
 
 
 //
-void node_print_operations( 
-        node_s * root, 
+void node_print_operations(
+        node_s * root,
         FILE * stream,
-        int level,
-        int size )
+        int level )
 {
     if( stream == NULL )
     {
         fprintf( stderr, "bad parameter in node_print_operation\n" );
         exit( EXIT_FAILURE );
     }
-    
+
     if( root == NULL )
     {
         return;
-    }    
+    }
 
-    
-    node_print_operations( root->branches[1], stream, level + 1, size );   
+
+    node_print_operations( root->branches[1], stream, level + 1 );
 //    fprintf( stream, "%*s", level, " ");
 
 
-    
+
     if( root->type == INPUTX )
-    {   
-        fprintf( stream, "         %*sx\n", level*10 - 10, " " );
-//        fprintf( stream, "%*sx%*s", level, " ", size, "\n" ); 
+    {
+        fprintf( stream, "%*sx\n", level*10 + 2, " " );
         return;
     }
 
     if( root->type == CONSTANT )
     {
-        fprintf( stream, "         %*s%f\n", level*10 - 10, " ", root->constant_value );     
-//        fprintf( stream, "%*s%f%*s", level, " ", root->constant_value, size, "\n" );     
+        fprintf( stream, "%*s%f\n", level*10 + 2, " ", root->constant_value );
         return;
-    }        
-    
-    fprintf( stream, "%*s       /\n", level*10, " " );    
-    
+    }
+
+    fprintf( stream, "%*s/\n", level*10 + 10, " " );
+
     if( root->type == MINIMUM )
     {
         fprintf( stream, "%*sL%d::min::\n", level*10, " ", level );
-//        fprintf( stream, "%*s::min::%*s", level, " ", size, "\n" ); 
     }
     else if( root->type == MAXIMUM )
     {
         fprintf( stream, "%*sL%d::max::\n", level*10, " ", level );
-//        fprintf( stream, "%*s::max::%*s", level, " ", size, "\n" ); 
     }
     else if( root->type == ADD )
     {
-        fprintf( stream, "%*sL%d::+::\n", level*10, " ", level );  
-//        fprintf( stream, "%*s::+::%*s", level, " ", size, "\n" );   
+        fprintf( stream, "%*sL%d::add::\n", level*10, " ", level );
     }
     else if( root->type == SUBTRACT )
     {
-        fprintf( stream, "%*sL%d::-::\n", level*10, " ", level );    
-//        fprintf( stream, "%*s::-::%*s", level, " ", size, "\n" );    
+        fprintf( stream, "%*sL%d::sub::\n", level*10, " ", level );
     }
     else if( root->type == MULTIPLY )
     {
-        fprintf( stream, "%*sL%d::*::\n", level*10, " ", level );
-//        fprintf( stream, "%*s::*::%*s", level, " ", size, "\n" ); 
+        fprintf( stream, "%*sL%d::mul::\n", level*10, " ", level );
     }
     else if( root->type == DIVIDE )
-    {   
-        fprintf( stream, "%*sL%d::/::\n", level*10, " ", level );
-//        fprintf( stream, "%*s::/::%*s", level, " ", size, "\n" ); 
+    {
+        fprintf( stream, "%*sL%d::div::\n", level*10, " ", level );
     }
     else
     {
         fprintf( stderr, "Error, unknown case in node_print_operation\n" );
         exit( EXIT_FAILURE );
     }
-    
-    fprintf( stream, "%*s       \\\n", level*10, " " );
-    
-    node_print_operations( root->branches[0], stream, level + 1, size );
+
+    fprintf( stream, "%*s\\\n", level*10 + 10, " " );
+
+    node_print_operations( root->branches[0], stream, level + 1 );
 }
