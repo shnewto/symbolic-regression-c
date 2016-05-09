@@ -423,48 +423,39 @@ void node_print_operations(
         return;
     }        
     
+    fprintf( stream, "%*s/\n", level*10 + 10, " " );      
     
     if( root->type == MINIMUM )
     {
-        fprintf( stream, "%*s/\n", level*10 + 10, " " );      
         fprintf( stream, "%*sL%d::min::\n", level*10, " ", level );
-        fprintf( stream, "%*s\\\n", level*10 + 10, " " );              
     }
     else if( root->type == MAXIMUM )
     {
-        fprintf( stream, "%*s/\n", level*10 + 10, " " );      
         fprintf( stream, "%*sL%d::max::\n", level*10, " ", level );
-        fprintf( stream, "%*s\\\n", level*10 + 10, " " );              
     }
     else if( root->type == ADD )
     {
-        fprintf( stream, "%*s/\n", level*10 + 10, " " );             
         fprintf( stream, "%*sL%d::add::\n", level*10, " ", level ); 
-        fprintf( stream, "%*s\\\n", level*10 + 10, " " );         
     }
     else if( root->type == SUBTRACT )
     {
-        fprintf( stream, "%*s/\n", level*10 + 10, " " );         
         fprintf( stream, "%*sL%d::sub::\n", level*10, " ", level );  
-        fprintf( stream, "%*s\\\n", level*10 + 10, " " );          
     }
     else if( root->type == MULTIPLY )
     {
-        fprintf( stream, "%*s/\n", level*10 + 10, " " );           
         fprintf( stream, "%*sL%d::mul::\n", level*10, " ", level );
-        fprintf( stream, "%*s\\\n", level*10 + 10, " " );         
     }
     else if( root->type == DIVIDE )
     {   
-        fprintf( stream, "%*s/\n", level*10 + 10, " " );         
         fprintf( stream, "%*sL%d::div::\n", level*10, " ", level );
-        fprintf( stream, "%*s\\\n", level*10 + 10, " " );        
     }
     else
     {
         fprintf( stderr, "Error, unknown case in node_print_operation\n" );
         exit( EXIT_FAILURE );
     }
+    
+    fprintf( stream, "%*s\\\n", level*10 + 10, " " );              
     
     node_print_operations( root->branches[0], stream, level + 1 );
 }
