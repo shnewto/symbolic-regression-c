@@ -7,6 +7,7 @@
 
 #include "algorithm.h"
 #include "population.h"
+#include "global_memory.h"
 
 
 
@@ -53,6 +54,8 @@ static void generate_data_set(
 //
 int main( )
 {
+    init_global_memory();
+
     // initialize some pseudo-random numbers
     // with time as the seed.
     srand((unsigned) time(NULL));
@@ -71,7 +74,7 @@ int main( )
     if( data_set_stream == NULL )
     {
         fprintf( stderr, "failed to open %s\n", data_set_file_name );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     generate_data_set( &fitness_function, data_set_stream );
@@ -95,7 +98,7 @@ int main( )
     {
         fprintf( stderr, "failed to open %s\n", results_filename );
 
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     generate_results_table(
@@ -116,7 +119,7 @@ int main( )
     {
         fprintf( stderr, "failed to open %s\n", function_filename );
 
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     individual_print_function(
@@ -127,7 +130,7 @@ int main( )
 
     population_free( &initial_population );
 
-
+    
     return EXIT_SUCCESS;
 }
 
@@ -141,7 +144,7 @@ static void generate_results_table(
     if( ((*population) == NULL) || (stream == NULL) )
     {
         fprintf( stderr, "bad parameter in generate_results_table\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     individual_s * individual = NULL;
@@ -169,7 +172,7 @@ static void generate_data_set(
     if( stream == NULL )
     {
         fprintf( stderr, "bad parameter in generate_data_set\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     double range_min = -6;
@@ -197,7 +200,7 @@ static void generate_data_set(
         if( (*idx) > MAX_DATA_POINTS )
         {
             fprintf( stderr, "Data point count exceeded MAX_DATA_POINTS\n" );
-            exit( EXIT_FAILURE );
+            graceful_exit( EXIT_FAILURE );
         }
     }
 }

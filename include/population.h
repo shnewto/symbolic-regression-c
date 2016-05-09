@@ -23,6 +23,9 @@ typedef struct population
                                                  * Each is a tree representing an 
                                                  * evolved f(x). 
                                                  */
+    //
+    //
+    unsigned long memory_index; /*!< Index in GLOBAL_POPULATION_MEMORY_TABLE */
 } population_s;
 
 

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "node.h"
+#include "global_memory.h"
 
 
 
@@ -15,7 +16,7 @@ node_s * node_alloc( )
     if( node == NULL )
     {
         fprintf( stderr, "calloc failed in node_alloc\n");
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     return node;
@@ -45,7 +46,7 @@ void generate_full_tree(
     if( root == NULL )
     {
         fprintf( stderr, "bad parameter in generate_full_tree\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     node_spawn( root );
@@ -91,7 +92,7 @@ void generate_full_tree(
         else
         {
             fprintf( stderr, "Unknown case in generate_full_tree\n" );
-            exit( EXIT_FAILURE );
+            graceful_exit( EXIT_FAILURE );
         }
     }
 }
@@ -103,7 +104,7 @@ void node_copy( node_s * in, node_s * out, node_s * parent )
     if( (in == NULL) || (out == NULL) )
     {
         fprintf( stderr, "bad parameter in node_copy\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     out->type = in->type;
@@ -154,7 +155,7 @@ double node_evaluate( node_s * root, double input_x )
     if( root == NULL )
     {
         fprintf( stderr, "bad parameter in node_evaluate\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     /* evaluates the tree , for a given X. */
@@ -222,7 +223,7 @@ double node_evaluate( node_s * root, double input_x )
     else
     {
         fprintf( stderr, "Error, unknown case in node_evaluate \n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
 
@@ -239,7 +240,7 @@ void node_calc_size(
     if( (root == NULL) || (terminals == NULL) || (nonterminals == NULL) )
     {
         fprintf( stderr, "bad parameter in node_calc_size\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     if( (root->type == INPUTX) || (root->type == CONSTANT) )
@@ -267,7 +268,7 @@ void node_walk_terminals(
     if( node == NULL )
     {
         fprintf( stderr, "bad parameter in node_walk_terms\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     if( GLOBAL_LAST_STEP == GLOBAL_STEP_COUNT )
@@ -301,7 +302,7 @@ void node_walk_nonterminals(
     if( node == NULL )
     {
         fprintf( stderr, "bad parameter in node_walk_terms\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     if( GLOBAL_LAST_STEP == GLOBAL_STEP_COUNT )
@@ -333,7 +334,7 @@ void node_mutate( node_s *root )
     if( root == NULL )
     {
         fprintf( stderr, "bad parameter in node_mutate\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     if( random_unsigned_long( 100 ) < MUTATE_PROBABILITY )
@@ -397,7 +398,7 @@ void node_print_operations(
     if( stream == NULL )
     {
         fprintf( stderr, "bad parameter in node_print_operation\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     if( root == NULL )
@@ -405,11 +406,7 @@ void node_print_operations(
         return;
     }
 
-
     node_print_operations( root->branches[1], stream, level + 1 );
-//    fprintf( stream, "%*s", level, " ");
-
-
 
     if( root->type == INPUTX )
     {
@@ -452,7 +449,7 @@ void node_print_operations(
     else
     {
         fprintf( stderr, "Error, unknown case in node_print_operation\n" );
-        exit( EXIT_FAILURE );
+        graceful_exit( EXIT_FAILURE );
     }
 
     fprintf( stream, "%*s\\\n", level*10 + 10, " " );
