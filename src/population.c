@@ -26,7 +26,7 @@ population_s * population_alloc( )
 //
 void population_evolve( 
         fitness_function_s fitness_function, 
-        population_s * population )
+        population_ref * population )
 {
     if( population == NULL )
     {
@@ -43,6 +43,8 @@ void population_evolve(
     
     for( unsigned long idx = 0; idx < GENERATIONS; ++idx )
     {
+        population_calc_all( fitness_function, population );
+        
         population_new_generation( fitness_function, population );
     }
 
@@ -58,7 +60,7 @@ void population_evolve(
 
 //
 void population_spawn( 
-        population_s * population )
+        population_ref * population )
 {
     if( population == NULL )
     {
@@ -68,17 +70,17 @@ void population_spawn(
     
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        population->individuals[ idx ] = individual_alloc();
+        (*population)->individuals[ idx ] = individual_alloc();
         individual_spawn( 
-                population->individuals[ idx ] );
+                (*population)->individuals[ idx ] );
     }    
 }
 
 
 //
-void population_free( population_s ** population )
+void population_free( population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         return;
     } 
@@ -135,9 +137,9 @@ individual_s * population_tournament(
 //
 void population_calc_all( 
         fitness_function_s fitness_function, 
-        population_s * population )
+        population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_calc_all\n");
         exit( EXIT_FAILURE );
@@ -145,8 +147,8 @@ void population_calc_all(
         
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        individual_evaluate( fitness_function, population->individuals[ idx ] );
-        individual_calc_size( population->individuals[ idx ] );
+        individual_evaluate( fitness_function, (*population)->individuals[ idx ] );
+        individual_calc_size( (*population)->individuals[ idx ] );
     }
 }
 
@@ -154,9 +156,9 @@ void population_calc_all(
 //
 void population_new_generation( 
         fitness_function_s fitness_function,    
-        population_s * population )
+        population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_new_generation\n");
         exit( EXIT_FAILURE );
@@ -172,10 +174,7 @@ void population_new_generation(
     
     unsigned long random_index_a = 0;
     unsigned long random_index_b = 0;
-
-
-    population_calc_all( fitness_function, population );
-
+    
     elite_indiviual = individual_alloc();
 
     individual_copy( population_best_get( population ), elite_indiviual );
@@ -186,7 +185,7 @@ void population_new_generation(
         {
             random_index_a = random_unsigned_long( POPULATION_SIZE - 1 );
             
-            contenders[ jdx ] = population->individuals[ random_index_a ];
+            contenders[ jdx ] = (*population)->individuals[ random_index_a ];
         }
 
         new_population->individuals[ idx ] = population_tournament( contenders );
@@ -204,31 +203,31 @@ void population_new_generation(
         individual_mutate( new_population->individuals[ idx ] );
     }
 
-    population_free( &population );    
+    population_free( population );    
     
-    population = population_alloc();    
+    (*population) = population_alloc();    
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        population->individuals[ idx ] = individual_alloc();
+        (*population)->individuals[ idx ] = individual_alloc();
         individual_copy( 
                 new_population->individuals[ idx ], 
-                population->individuals[ idx ] );
+                (*population)->individuals[ idx ] );
     }
 
     /* Elitism */
     random_index_a = random_unsigned_long( POPULATION_SIZE );
     random_index_b = random_unsigned_long( POPULATION_SIZE );
 
-    individual_free( &population->individuals[ random_index_a ] );
-    population->individuals[ random_index_a ] = individual_alloc();
+    individual_free( &(*population)->individuals[ random_index_a ] );
+    (*population)->individuals[ random_index_a ] = individual_alloc();
     
-    individual_copy( elite_indiviual, population->individuals[ random_index_a ] );
+    individual_copy( elite_indiviual, (*population)->individuals[ random_index_a ] );
     
-    individual_free( &population->individuals[ random_index_b ] );
-    population->individuals[ random_index_b ] = individual_alloc();
+    individual_free( &(*population)->individuals[ random_index_b ] );
+    (*population)->individuals[ random_index_b ] = individual_alloc();
     
-    individual_copy( elite_indiviual, population->individuals[ random_index_b ] );
+    individual_copy( elite_indiviual, (*population)->individuals[ random_index_b ] );
 
     population_calc_all( fitness_function, population );
     
@@ -239,22 +238,22 @@ void population_new_generation(
 
 //
 individual_s * population_best_get( 
-        population_s * population )
+        population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_best_get\n");
         exit( EXIT_FAILURE );
     }     
     
     double temp;
-    double best_fitness = population->individuals[ 0 ]->fitness;
+    double best_fitness = (*population)->individuals[ 0 ]->fitness;
     int index_of_best_fitness = 0;
 
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        temp = population->individuals[ idx ]->fitness;
+        temp = (*population)->individuals[ idx ]->fitness;
 
         if( temp < best_fitness )
         {
@@ -264,14 +263,15 @@ individual_s * population_best_get(
     }
 
     
-    return population->individuals[ index_of_best_fitness ];
+    return (*population)->individuals[ index_of_best_fitness ];
 }
 
 
 //
-unsigned long population_avg_size_get( population_s * population )
+unsigned long population_avg_size_get( 
+        population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_avg_size_get\n");
         exit( EXIT_FAILURE );
@@ -282,7 +282,7 @@ unsigned long population_avg_size_get( population_s * population )
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        sum += population->individuals[ idx ]->tree_node_count;
+        sum += (*population)->individuals[ idx ]->tree_node_count;
     }
 
     double average = ( sum / ((double)POPULATION_SIZE) );
@@ -293,21 +293,22 @@ unsigned long population_avg_size_get( population_s * population )
 
 
 //
-unsigned long population_max_size_get( population_s * population )
+unsigned long population_max_size_get( 
+        population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_max_size_get\n");
         exit( EXIT_FAILURE );
     }           
 
     unsigned long temp;
-    unsigned long max_size = population->individuals[ 0 ]->tree_node_count;
+    unsigned long max_size = (*population)->individuals[ 0 ]->tree_node_count;
 
 
     for( unsigned long idx = 0;idx < POPULATION_SIZE;++idx )
     {
-        temp = population->individuals[ idx ]->tree_node_count;
+        temp = (*population)->individuals[ idx ]->tree_node_count;
 
         if( temp > max_size )
         {
@@ -321,7 +322,8 @@ unsigned long population_max_size_get( population_s * population )
 
 
 //
-unsigned long population_min_size_get( population_s * population )
+unsigned long population_min_size_get( 
+        population_ref * population )
 {
     if( population == NULL )
     {
@@ -330,12 +332,12 @@ unsigned long population_min_size_get( population_s * population )
     }   
     
     unsigned long temp = 0;
-    unsigned long min_size = population->individuals[ 0 ]->tree_node_count;
+    unsigned long min_size = (*population)->individuals[ 0 ]->tree_node_count;
 
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        temp = population->individuals[ idx ]->tree_node_count;
+        temp = (*population)->individuals[ idx ]->tree_node_count;
 
         if( temp < min_size )
         {
@@ -351,9 +353,9 @@ unsigned long population_min_size_get( population_s * population )
 //
 void population_print_evaluation( 
         fitness_function_s fitness_function, 
-        population_s * population )
+        population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_print_evaluation\n");
         exit( EXIT_FAILURE );
@@ -377,9 +379,9 @@ void population_print_evaluation(
 
 
 //
-void population_avg_print( population_s * population )
+void population_avg_print( population_ref * population )
 {
-    if( population == NULL )
+    if( (*population) == NULL )
     {
         fprintf( stderr, "bad contenders array in population_avg_print\n");
         exit( EXIT_FAILURE );
@@ -389,7 +391,7 @@ void population_avg_print( population_s * population )
 
     for( unsigned long idx = 0; idx < POPULATION_SIZE; ++idx )
     {
-        sum += population->individuals[ idx ]->fitness;
+        sum += (*population)->individuals[ idx ]->fitness;
     }
     
     double average = sum / (double)POPULATION_SIZE;

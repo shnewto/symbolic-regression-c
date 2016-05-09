@@ -27,7 +27,7 @@
  */
 static void generate_results_table( 
         fitness_function_s fitness_function,
-        population_s * population, 
+        population_ref * population, 
         FILE* stream );
 
 
@@ -82,7 +82,7 @@ int main( )
 
     initial_population = population_alloc();
     
-    population_evolve( fitness_function, initial_population );
+    population_evolve( fitness_function, &initial_population );
 
     const char results_filename[] =
     "results.txt";
@@ -100,7 +100,7 @@ int main( )
     
     generate_results_table( 
             fitness_function, 
-            initial_population, 
+            &initial_population, 
             results_stream );
     
     fclose( results_stream );
@@ -115,10 +115,10 @@ int main( )
 //
 static void generate_results_table( 
         fitness_function_s fitness_function,
-        population_s * population, 
+        population_ref * population, 
         FILE* stream )
 {
-    if( (population == NULL) || (stream == NULL) )
+    if( ((*population) == NULL) || (stream == NULL) )
     {
         fprintf( stderr, "bad parameter in generate_results_table\n");
         exit( EXIT_FAILURE );

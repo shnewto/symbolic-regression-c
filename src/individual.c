@@ -185,38 +185,38 @@ void individual_crossover(
     GLOBAL_LAST_STEP = 0;
     GLOBAL_STEP_COUNT = 0;
     
-    step_range = individual_a->tree_terminal_count;
+    step_range = individual_a->tree_terminal_count - 1;
     
     if( random_unsigned_long( 100 ) < 90 )
     {
         GLOBAL_LAST_STEP 
-                = (int)random_unsigned_long_in_range( 1, step_range - 1);
+                = (int)random_unsigned_long_in_range( 2, step_range );
 
         node_walk_nonterminals( individual_a->tree_root_node, &crossover_node_1 );
     }
     else
     {
         GLOBAL_LAST_STEP
-                = (int)random_unsigned_long_in_range( 1, step_range - 1);
+                = (int)random_unsigned_long_in_range( 2, step_range );
 
         node_walk_terminals( individual_a->tree_root_node, &crossover_node_1 );
     }
     
     GLOBAL_STEP_COUNT = 0;
 
-    step_range = individual_b->tree_nonterminal_count;
+    step_range = individual_b->tree_nonterminal_count - 1;
     
     if( random_unsigned_long( 100 ) < 90 )
     {
         GLOBAL_LAST_STEP
-                = (int)random_unsigned_long_in_range( 1, step_range - 1);
+                = (int)random_unsigned_long_in_range( 2, step_range );
         
         node_walk_nonterminals( individual_b->tree_root_node, &crossover_node_2 );
     }
     else
     {
         GLOBAL_LAST_STEP
-                = (int)random_unsigned_long_in_range( 1, step_range - 1);
+                = (int)random_unsigned_long_in_range( 2, step_range );
         
         node_walk_terminals( individual_b->tree_root_node, &crossover_node_2 );
     }

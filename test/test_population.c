@@ -4,13 +4,19 @@
 
 #include "population.h"
 
+population_s *test_population;
+
 Describe(population_tests);
 
 BeforeEach(population_tests)
-{}
+{
+    test_population = population_alloc();
+}
 
 AfterEach(population_tests)
-{}
+{
+    population_free( &test_population );
+}
 
 Ensure( population_tests, alloc_and_free_succeed )
 {
@@ -29,3 +35,4 @@ Ensure( population_tests, alloc_and_free_succeed )
             population, 
             is_equal_to(NULL));
 }
+
