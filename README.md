@@ -32,8 +32,8 @@ TODO:
 6. Add command line options for a range of preset functions?
 7. Add command line help string.
 
-Known Issues:
+Notes:
 
-- With the right combination of large data sets, large populations and a lot of generations this program can "get lost" and may or may not run to completion. If you run into this let me know!
- 
-
+- This can be a beast with the right data set. For instance, with the 
+current data set, running with a population size of 1000 individuals for 1000 generations 
+may take something like an hour to run to completion. 
