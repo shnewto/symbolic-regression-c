@@ -26,9 +26,10 @@ TODO:
 
 1. Optimize the hell out of this.
 2. Convert documentation to Markdown.
-3. Write "graceful exit" function to cleanup memory before an 
-exit( EXIT_FAILURE ) 
+3. Add some more sophistication to global memory management.
 4. Tune.
+5. Add command line options for a range of preset functions?
+6. Add command line help string.
 
 Known Issues:
 
