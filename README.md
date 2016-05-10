@@ -6,6 +6,10 @@ A configurable genetic algorithm in written in C.
 Notes:
 
 - Perfect fitness == 0.0. The higher the fitness value the less fit the individual.
+- This can be a beast with the right configuration. There is a heavy penalty for
+trees with more than 512 nodes. Without that penalty expect execution time to grow incredibly 
+fast with large data sets, populations sizes or numbers of generations.
+
 
 Usage:
 
@@ -32,9 +36,3 @@ TODO:
 6. Add command line options for a range of preset functions?
 7. Add command line help string.
 8. Generalize beyond symbolic regression. Next step add the ability to run the Sante Fe Trail problem as well.
-
-Notes:
-
-- This can be a beast with the right configuration. There is a heavy penalty for
-trees with more than 512 nodes. Without that penalty expect execution time to grow incredibly 
-fast with large data sets, populations sizes or numbers of generations.
