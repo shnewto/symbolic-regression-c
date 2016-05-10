@@ -10,7 +10,7 @@
 
 
 //
-population_s * population_alloc( )
+population_s * population_alloc( void )
 {
     unsigned long idx;
     unsigned int break_flag = 0;
@@ -41,15 +41,15 @@ population_s * population_alloc( )
         graceful_exit( EXIT_FAILURE );
     }
 
-    
+
     return GLOBAL_POPULATION_MEMORY_TABLE[idx];
 }
 
 
 //
 void population_evolve(
-        fitness_function_s fitness_function,
-        population_ref * population )
+        const fitness_function_s fitness_function,
+        population_ref * const population )
 {
     if( population == NULL )
     {
@@ -83,7 +83,7 @@ void population_evolve(
 
 //
 void population_spawn(
-        population_ref * population )
+        population_ref * const population )
 {
     if( *population == NULL )
     {
@@ -101,7 +101,8 @@ void population_spawn(
 
 
 //
-void population_free( population_ref * population )
+void population_free(
+        population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -126,7 +127,7 @@ void population_free( population_ref * population )
 
 //
 individual_s * population_tournament(
-        individual_s * contenders[TOURNEMENT_ROUNDS] )
+        individual_s * const contenders[TOURNEMENT_ROUNDS] )
 {
     if( contenders == NULL )
     {
@@ -164,8 +165,8 @@ individual_s * population_tournament(
 
 //
 void population_calc_all(
-        fitness_function_s fitness_function,
-        population_ref * population )
+        const fitness_function_s fitness_function,
+        population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -183,8 +184,8 @@ void population_calc_all(
 
 //
 void population_new_generation(
-        fitness_function_s fitness_function,
-        population_ref * population )
+        const fitness_function_s fitness_function,
+        population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -267,7 +268,7 @@ void population_new_generation(
 
 //
 individual_s * population_best_get(
-        population_ref * population )
+        const population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -298,7 +299,7 @@ individual_s * population_best_get(
 
 //
 unsigned long population_avg_size_get(
-        population_ref * population )
+        const population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -323,7 +324,7 @@ unsigned long population_avg_size_get(
 
 //
 unsigned long population_max_size_get(
-        population_ref * population )
+        const population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -352,7 +353,7 @@ unsigned long population_max_size_get(
 
 //
 unsigned long population_min_size_get(
-        population_ref * population )
+        const population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -381,8 +382,8 @@ unsigned long population_min_size_get(
 
 //
 void population_print_evaluation(
-        fitness_function_s fitness_function,
-        population_ref * population )
+        const fitness_function_s fitness_function,
+        population_ref * const population )
 {
     if( (*population) == NULL )
     {
@@ -408,7 +409,8 @@ void population_print_evaluation(
 
 
 //
-void population_avg_print( population_ref * population )
+void population_avg_print(
+        const population_ref * const population )
 {
     if( (*population) == NULL )
     {

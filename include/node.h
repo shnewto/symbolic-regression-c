@@ -23,13 +23,15 @@ typedef unsigned long node_type;
 typedef struct node 
 {
     double constant_value; /*!< stores the constant, if any */
-
+    //
+    //
     node_type type; /*!< stores the terminal or non-terminal */
-
+    //
+    //
     struct node *parent; /*!< pointer to parent node */
-
+    //
+    //
     struct node *branches[ MAX_ARITY ]; /*!< pointers to branches */
-
 } node_s;
 
 
@@ -42,7 +44,7 @@ typedef struct node
  * 
  * @return Pointer to new \ref node_s.
  */
-node_s * node_alloc( );
+node_s * node_alloc( void );
 
 
 /**
@@ -51,7 +53,7 @@ node_s * node_alloc( );
  * @param [out] individual Pointer to \ref node_s which contains
  * the f(x) tree node generated. 
  */
-void node_spawn( node_s * node );
+void node_spawn( node_s * const node );
 
 
 /**
@@ -64,9 +66,9 @@ void node_spawn( node_s * node );
  * after swapping branches.
  */
 void generate_full_tree(
-        node_s * root,
-        unsigned long depth,
-        node_s * parent ); // generate random full trees
+        node_s * const root,
+        const unsigned long depth,
+        node_s * const parent ); // generate random full trees
 
 /**
  * 
@@ -75,7 +77,10 @@ void generate_full_tree(
  * @param [in] parent A pointer to \ref node_s which is the parent of the node
  * copied.
  */
-void node_copy(node_s * in, node_s * out, node_s * parent);
+void node_copy(
+        node_s * const in, 
+        node_s * const out, 
+        node_s * const parent );
 
 
 /**
@@ -84,7 +89,8 @@ void node_copy(node_s * in, node_s * out, node_s * parent);
  * @param [in] root Pointer to \ref node_s which contains
  * the f(x) tree noed generated.
  */
-void node_free( node_s ** root ); 
+void node_free( 
+        node_s ** const root ); 
 
 
 /**
@@ -100,8 +106,8 @@ void node_free( node_s ** root );
  * @return The value of the operation evaluated. 
  */
 double node_evaluate( 
-        node_s * root, 
-        double input_x ); 
+        node_s * const root, 
+        const double input_x ); 
 
 
 /**
@@ -115,9 +121,9 @@ double node_evaluate(
  * nonterminal nodes in the tree. 
  */
 void node_calc_size(
-        node_s * root, 
-        unsigned long * terminals, 
-        unsigned long * nonterminalss); 
+        node_s * const root, 
+        unsigned long * const terminals, 
+        unsigned long * const nonterminals); 
 
 
 /**
@@ -130,8 +136,8 @@ void node_calc_size(
  * node to crossover once it is found.
  */
 void node_walk_terminals(
-        node_s * root, 
-        node_s ** target );
+        node_s * const root, 
+        node_s ** const target );
 
 
 /**
@@ -144,8 +150,8 @@ void node_walk_terminals(
  * node to crossover once it is found.
  */
 void node_walk_nonterminals(
-        node_s * node, 
-        node_s ** target );
+        node_s * const node, 
+        node_s ** const target );
 
 
 /**
@@ -155,7 +161,8 @@ void node_walk_nonterminals(
  * @param [out] root A pointer to \ref node_s which has a chance 
  * of being mutated.
  */
-void node_mutate( node_s * root );
+void node_mutate( 
+        node_s * const root );
 
 
 /**
@@ -166,7 +173,9 @@ void node_mutate( node_s * root );
  * 
  * @return random number 
  */
-double random_double_in_range( double min, double max );
+double random_double_in_range( 
+        const double min, 
+        const double max );
 
 
 /**
@@ -176,7 +185,8 @@ double random_double_in_range( double min, double max );
  * 
  * @return random number 
  */
-unsigned long random_unsigned_long( unsigned long mod_value );
+unsigned long random_unsigned_long( 
+        const unsigned long mod_value );
 
 
 /**
@@ -188,8 +198,8 @@ unsigned long random_unsigned_long( unsigned long mod_value );
  * @return random number 
  */
 unsigned long random_unsigned_long_in_range( 
-        unsigned long min, 
-        unsigned long max );
+        const unsigned long min, 
+        const unsigned long max );
 
 
 /**
@@ -200,9 +210,9 @@ unsigned long random_unsigned_long_in_range(
  * @param [in] level Positive number representing level of tree depth where root is 1.
  */
 void node_print_operations( 
-        node_s * root, 
-        FILE * stream,
-        int level );
+        node_s * const root, 
+        FILE * const stream,
+        const int level );
 
 
 

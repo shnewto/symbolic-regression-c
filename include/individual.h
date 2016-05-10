@@ -58,7 +58,7 @@ individual_s * individual_alloc( );
  * the f(x) tree generated.
  */
 void individual_spawn( 
-        individual_s * individual );
+        individual_s * const individual );
 
 /**
  * @brief Cleans up memory associated with the \ref individual_s data.
@@ -66,7 +66,8 @@ void individual_spawn(
  * @param [in] population Pointer to \ref individual_s which contains
  * the f(x) tree generated.
  */
-void individual_free( individual_s ** individual );
+void individual_free( 
+        individual_s ** const individual );
 
 
 /**
@@ -75,7 +76,9 @@ void individual_free( individual_s ** individual );
  * @param [out] in A pointer to \ref individual_s which is copied to.
  * @param [in] out A pointer to \ref individual_s which is copied.
  */
-void individual_copy( individual_s * in, individual_s * out );
+void individual_copy( 
+        const individual_s * const in, 
+        individual_s * const out );
 
 
 /**
@@ -86,7 +89,7 @@ void individual_copy( individual_s * in, individual_s * out );
  * @return The number of node in the individual's f(x) tree.  
  */
 unsigned long individual_calc_size( 
-        individual_s * individual );
+        individual_s * const individual );
 
 
 /**
@@ -96,7 +99,7 @@ unsigned long individual_calc_size(
  * receives the mutations. 
  */
 void individual_mutate( 
-        individual_s * individual );
+        individual_s * const individual );
 
 
 /**
@@ -116,8 +119,8 @@ void individual_mutate(
  */
 
 void individual_evaluate( 
-        fitness_function_s fitness_function, 
-        individual_s * individual );
+        const fitness_function_s fitness_function, 
+        individual_s * const individual );
 
 
 /**
@@ -129,8 +132,8 @@ void individual_evaluate(
  * crossed over with individual_a.
  */
 void individual_crossover( 
-        individual_s * individual_a, 
-        individual_s * individual_b );
+        individual_s * const individual_a, 
+        individual_s * const individual_b );
 
 
 /**
@@ -140,8 +143,8 @@ void individual_crossover(
  * @param [in] stream File * to write operations to.
  */
 void individual_print_function(
-        individual_s * individual,
-        FILE * stream );
+        const individual_s * const individual,
+        FILE * const stream );
 
 
 

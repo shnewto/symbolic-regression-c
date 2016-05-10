@@ -49,7 +49,7 @@ void release_global_memory();
  * 
  * @param [in] exit_code Exit code used in call to exit(). 
  */
-void graceful_exit( unsigned int exit_code );
+void graceful_exit( const unsigned int exit_code );
 
 
 

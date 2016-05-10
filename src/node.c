@@ -9,7 +9,7 @@
 
 
 //
-node_s * node_alloc( )
+node_s * node_alloc( void )
 {
     node_s *node = (node_s*)calloc( 1, sizeof(node_s) );
 
@@ -24,7 +24,7 @@ node_s * node_alloc( )
 
 
 //
-void node_spawn( node_s * node )
+void node_spawn( node_s * const node )
 {
     node->parent = NULL;
     node->constant_value = 0.0;
@@ -39,9 +39,9 @@ void node_spawn( node_s * node )
 
 //
 void generate_full_tree(
-        node_s * root,
-        unsigned long depth,
-        node_s * parent )
+        node_s * const root,
+        const unsigned long depth,
+        node_s * const parent )
 {
     if( root == NULL )
     {
@@ -99,7 +99,10 @@ void generate_full_tree(
 
 
 //
-void node_copy( node_s * in, node_s * out, node_s * parent )
+void node_copy(
+        node_s * const in,
+        node_s * const out,
+        node_s * const parent )
 {
     if( (in == NULL) || (out == NULL) )
     {
@@ -124,7 +127,8 @@ void node_copy( node_s * in, node_s * out, node_s * parent )
 
 
 //
-void node_free( node_s ** root )
+void node_free(
+        node_s ** const root )
 {
     if( (*root) == NULL )
     {
@@ -150,7 +154,9 @@ void node_free( node_s ** root )
 
 
 //
-double node_evaluate( node_s * root, double input_x )
+double node_evaluate(
+        node_s * const root,
+        const double input_x )
 {
     if( root == NULL )
     {
@@ -233,9 +239,9 @@ double node_evaluate( node_s * root, double input_x )
 
 //
 void node_calc_size(
-        node_s * root,
-        unsigned long * terminals,
-        unsigned long * nonterminals )
+        node_s * const root,
+        unsigned long * const terminals,
+        unsigned long * const nonterminals )
 {
     if( (root == NULL) || (terminals == NULL) || (nonterminals == NULL) )
     {
@@ -262,8 +268,8 @@ void node_calc_size(
 
 //
 void node_walk_terminals(
-        node_s * node,
-        node_s ** target )
+        node_s * const node,
+        node_s ** const target )
 {
     if( node == NULL )
     {
@@ -296,8 +302,8 @@ void node_walk_terminals(
 
 //
 void node_walk_nonterminals(
-        node_s * node,
-        node_s ** target )
+        node_s * const node,
+        node_s ** const target )
 {
     if( node == NULL )
     {
@@ -329,7 +335,8 @@ void node_walk_nonterminals(
 
 
 //
-void node_mutate( node_s *root )
+void node_mutate(
+        node_s * const root )
 {
     if( root == NULL )
     {
@@ -363,7 +370,9 @@ void node_mutate( node_s *root )
 
 
 //
-double random_double_in_range( double min, double max )
+double random_double_in_range(
+        const double min,
+        const double max )
 {
     return ( ((double)rand() * ( max - min ))
             / (double)RAND_MAX + min );
@@ -371,7 +380,8 @@ double random_double_in_range( double min, double max )
 
 
 //
-unsigned long random_unsigned_long( unsigned long mod_value )
+unsigned long random_unsigned_long(
+        const unsigned long mod_value )
 {
     return ( (unsigned long)rand() % mod_value );
 }
@@ -379,8 +389,8 @@ unsigned long random_unsigned_long( unsigned long mod_value )
 
 //
 unsigned long random_unsigned_long_in_range(
-        unsigned long min,
-        unsigned long max )
+        const unsigned long min,
+        const unsigned long max )
 {
        double scaled = (double)rand()/RAND_MAX;
 
@@ -391,9 +401,9 @@ unsigned long random_unsigned_long_in_range(
 
 //
 void node_print_operations(
-        node_s * root,
-        FILE * stream,
-        int level )
+        node_s * const root,
+        FILE * const stream,
+        const int level )
 {
     if( stream == NULL )
     {
