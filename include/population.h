@@ -41,7 +41,7 @@ typedef population_s * population_ref;
  * 
  * @return Pointer to new \ref population_s. 
  */
-population_s * population_alloc( );
+population_s * population_alloc( void );
 
 
 /**
@@ -56,8 +56,8 @@ population_s * population_alloc( );
  * the f(x) trees.
  */
 void population_evolve( 
-        fitness_function_s fitness_function, 
-        population_ref * population );
+        const fitness_function_s fitness_function, 
+        population_ref * const population );
 
 
 /**
@@ -67,7 +67,7 @@ void population_evolve(
  * the f(x) trees generated.
  */
 void population_spawn( 
-        population_ref * population );
+        population_ref * const population );
 
 
 /**
@@ -77,7 +77,7 @@ void population_spawn(
  * the f(x) trees generated.
  */
 void population_free(
-        population_ref * population );
+        population_ref * const population );
 
 /**
  * @brief Calculates fitness, number of terminal nodes, 
@@ -89,8 +89,8 @@ void population_free(
  * the f(x) trees that fitness and size are calculated for.
  */
 void population_calc_all( 
-        fitness_function_s fitness_function, 
-        population_ref * population );
+        const fitness_function_s fitness_function, 
+        population_ref * const population );
 
 
 /**
@@ -105,7 +105,7 @@ void population_calc_all(
  * of all the contenders. 
  */
 individual_s * population_tournament( 
-        individual_s * contenders[ TOURNEMENT_ROUNDS ] );
+        individual_s * const contenders[ TOURNEMENT_ROUNDS ] );
 
 
 /**
@@ -119,8 +119,8 @@ individual_s * population_tournament(
  * the f(x) trees that undergo the transition to a new generation.
  */
 void population_new_generation( 
-        fitness_function_s fitness_function,    
-        population_ref * population );
+        const fitness_function_s fitness_function,    
+        population_ref * const population );
 
 
 /**
@@ -134,7 +134,7 @@ void population_new_generation(
  * f(x) trees.
  */
 unsigned long population_avg_size_get(
-        population_ref * population );
+        const population_ref * const population );
 
 
 /**
@@ -148,7 +148,7 @@ unsigned long population_avg_size_get(
  * f(x) trees.
  */
 unsigned long population_max_size_get(
-        population_ref * population );
+        const population_ref * const population );
 
 
 /**
@@ -162,7 +162,7 @@ unsigned long population_max_size_get(
  * f(x) trees.
  */
 unsigned long population_min_size_get( 
-        population_ref * population );
+        const population_ref * const population );
 
 
 /**
@@ -175,7 +175,7 @@ unsigned long population_min_size_get(
  * the population's best fitness. 
  */
 individual_s * population_best_get(
-        population_ref * population );
+        const population_ref * const population );
 
 
 /**
@@ -188,8 +188,8 @@ individual_s * population_best_get(
  * the f(x) trees that fitness and size are calculated for.
  */
 void population_print_evaluation(
-        fitness_function_s fitness_function, 
-        population_ref * population );
+        const fitness_function_s fitness_function, 
+        population_ref * const population );
 
 /**
  * @brief Prints a formatted evaluation of the population's average 
@@ -199,7 +199,7 @@ void population_print_evaluation(
  * the f(x) trees that fitness and size are calculated for.
  */
 void population_avg_print(
-        population_ref * population );
+        const population_ref * const population );
 
 
 

@@ -27,9 +27,9 @@
  * @param [in] stream File * to write results to.
  */
 static void generate_results_table(
-        fitness_function_s fitness_function,
-        population_ref * population,
-        FILE* stream );
+        const fitness_function_s fitness_function,
+        population_ref * const population,
+        FILE * const stream );
 
 
 /**
@@ -45,8 +45,8 @@ static void generate_results_table(
  * @param [in] stream File * to write data set to.
  */
 static void generate_data_set(
-        fitness_function_s * fitness_function,
-        FILE * stream );
+        fitness_function_s * const fitness_function,
+        FILE * const stream );
 
 
 
@@ -138,9 +138,9 @@ int main( )
 
 //
 static void generate_results_table(
-        fitness_function_s fitness_function,
-        population_ref * population,
-        FILE* stream )
+        const fitness_function_s fitness_function,
+        population_ref * const population,
+        FILE * const stream )
 {
     if( ((*population) == NULL) || (stream == NULL) )
     {
@@ -167,8 +167,8 @@ static void generate_results_table(
 
 //
 static void generate_data_set(
-        fitness_function_s * fitness_function,
-        FILE* stream )
+        fitness_function_s * const fitness_function,
+        FILE * const stream )
 {
     if( stream == NULL )
     {

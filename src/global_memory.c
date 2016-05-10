@@ -32,7 +32,7 @@ void release_global_memory()
 }
 
 
-void graceful_exit( unsigned int exit_code )
+void graceful_exit( const unsigned int exit_code )
 {
     release_global_memory();
 

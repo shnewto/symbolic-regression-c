@@ -28,7 +28,7 @@ individual_s * individual_alloc( )
 
 //
 void individual_spawn(
-        individual_s * individual )
+        individual_s * const individual )
 {
     if( individual == NULL )
     {
@@ -53,7 +53,8 @@ void individual_spawn(
 
 
 //
-void individual_free( individual_s ** individual )
+void individual_free(
+        individual_s ** const individual )
 {
     if( *individual == NULL )
     {
@@ -68,7 +69,9 @@ void individual_free( individual_s ** individual )
 
 
 //
-void individual_copy( individual_s * in, individual_s * out )
+void individual_copy(
+        const individual_s * const in,
+        individual_s * const out )
 {
     if( (in == NULL) || (out == NULL) )
     {
@@ -89,7 +92,7 @@ void individual_copy( individual_s * in, individual_s * out )
 
 //
 unsigned long individual_calc_size(
-        individual_s * individual )
+        individual_s * const individual )
 {
     if( individual == NULL )
     {
@@ -118,7 +121,8 @@ unsigned long individual_calc_size(
 
 
 //
-void individual_mutate( individual_s * individual )
+void individual_mutate(
+        individual_s * const individual )
 {
     if( individual == NULL )
     {
@@ -132,8 +136,8 @@ void individual_mutate( individual_s * individual )
 
 //
 void individual_evaluate(
-        fitness_function_s fitness_function,
-        individual_s * individual )
+        const fitness_function_s fitness_function,
+        individual_s * const individual )
 {
     if( individual == NULL )
     {
@@ -170,8 +174,8 @@ void individual_evaluate(
 
 //
 void individual_crossover(
-        individual_s * individual_a,
-        individual_s * individual_b )
+        individual_s * const individual_a,
+        individual_s * const individual_b )
 {
     if( (individual_a == NULL) || (individual_b == NULL) )
     {
@@ -256,16 +260,14 @@ void individual_crossover(
 
 //
 void individual_print_function(
-        individual_s * individual,
-        FILE * stream )
+        const individual_s * const individual,
+        FILE * const stream )
 {
     if( (individual == NULL) || (stream == NULL) )
     {
         fprintf( stderr, "bad parameter in print_individual_function\n");
         graceful_exit( EXIT_FAILURE );
     }
-
-    individual->fitness = 0;
 
     fprintf( stream, "f( x )\n" );
 
