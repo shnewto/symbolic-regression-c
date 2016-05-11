@@ -10,6 +10,9 @@ Notes:
 trees with more than 512 nodes. Without that penalty expect execution time to grow incredibly 
 fast with large data sets, populations sizes or numbers of generations.
 
+Dependencies:
+
+- Running tests requires Cgreen available [here](https://github.com/cgreen-devs/cgreen).
 
 Usage:
 
