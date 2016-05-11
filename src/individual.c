@@ -1,7 +1,6 @@
 
 #include <stdio.h>      /* printf, fopen */
 #include <stdlib.h>     /* srand, rand, calloc, exit, free */
-#include <math.h>
 
 #include "algorithm.h"
 #include "node.h"
@@ -100,7 +99,7 @@ unsigned long individual_calc_size(
         graceful_exit( EXIT_FAILURE );
     }
 
-    individual->tree_node_count = 1; // at least a root node
+    individual->tree_node_count = 0; // at least a root node
     individual->tree_terminal_count = 0;
     individual->tree_nonterminal_count = 0;
 
@@ -255,26 +254,4 @@ void individual_crossover(
     crossover_node_2 = NULL;
 
     node_free( &temp );
-}
-
-
-//
-void individual_print_function(
-        const individual_s * const individual,
-        FILE * const stream )
-{
-    if( (individual == NULL) || (stream == NULL) )
-    {
-        fprintf( stderr, "bad parameter in print_individual_function\n");
-        graceful_exit( EXIT_FAILURE );
-    }
-
-    fprintf( stream, "f( x )\n" );
-
-    node_print_operations(
-            individual->tree_root_node,
-            stream,
-            1 );
-
-    fprintf( stream, "\n" );
 }

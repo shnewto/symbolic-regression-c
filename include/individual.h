@@ -136,17 +136,6 @@ void individual_crossover(
         individual_s * const individual_b );
 
 
-/**
- * @brief Recursive function to print tree associated with an individual's f(x).
- * 
- * @param [in] individual A pointer to \ref individual_s whose tree is printed.
- * @param [in] stream File * to write operations to.
- */
-void individual_print_function(
-        const individual_s * const individual,
-        FILE * const stream );
-
-
 
 
 #endif //INDIVIDUAL_H
