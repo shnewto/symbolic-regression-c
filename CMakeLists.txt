@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(
 )
 
 PROJECT(
-    symbolic-regression
+    symbolic-regression-c
 )
 
 # cmake .. -DDEBUG_ON=true
@@ -28,7 +28,12 @@ FILE(
 
 SET(
     SRC_LIB
-    symbolic-regression-lib
+    symbolic-regression
+)
+
+SET(
+    MTWIST_LIB
+    mtwist
 )
 
 SET(
@@ -51,8 +56,19 @@ SET(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 ) 
 
+SET( 
+    DEP_INCLUDE_DIR 
+    ${CMAKE_CURRENT_SOURCE_DIR}/dep/include
+) 
+
 INCLUDE_DIRECTORIES(
     ${INCLUDE_DIR}
+    ${DEP_INCLUDE_DIR}
+)
+
+ADD_LIBRARY(
+    ${MTWIST_LIB}
+    ${CMAKE_CURRENT_SOURCE_DIR}/dep/src/mtwist.c
 )
 
 ADD_LIBRARY(
@@ -76,11 +92,13 @@ TARGET_INCLUDE_DIRECTORIES(
     ${PROJECT_NAME}
     PUBLIC
     ${INCLUDE_DIR}    
+    ${DEP_INCLUDE_DIR}
 )
 
 TARGET_LINK_LIBRARIES( 
     ${PROJECT_NAME}
     m
+    ${MTWIST_LIB}
     ${DEBUG_FLAGS}
     -fPIC
 )
@@ -97,10 +115,12 @@ FOREACH(TEST_SOURCE_FILE ${TEST_SRCS})
         ${TEST_FILE_NAME}
         PUBLIC
         ${INCLUDE_DIR}    
+        ${DEP_INCLUDE_DIR}
     )
     TARGET_LINK_LIBRARIES( 
         ${TEST_FILE_NAME}
         ${SRC_LIB}
+        ${MTWIST_LIB}
         cgreen
         -fPIC
     )

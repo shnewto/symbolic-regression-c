@@ -4,7 +4,9 @@
 
 
 
+#include "mtwist.h"
 #include "algorithm.h"
+
 
 
 
@@ -181,7 +183,7 @@ double random_double_in_range(
 /**
  * @brief Utility function.
  * 
- * @param [in] mod_value i.e, rand() % mod_value.
+ * @param [in] mod_value Exclusive maximum value.
  * 
  * @return random number 
  */

@@ -374,8 +374,8 @@ double random_double_in_range(
         const double min,
         const double max )
 {
-    return ( ((double)rand() * ( max - min ))
-            / (double)RAND_MAX + min );
+    return ( ((double)genrand_int32() * ( max - min ))
+            / (double)MAX_MTWIST_RAND + min );
 }
 
 
@@ -383,7 +383,7 @@ double random_double_in_range(
 unsigned long random_unsigned_long(
         const unsigned long mod_value )
 {
-    return ( (unsigned long)rand() % mod_value );
+    return ( (unsigned long)genrand_int32() % mod_value );
 }
 
 
@@ -392,9 +392,9 @@ unsigned long random_unsigned_long_in_range(
         const unsigned long min,
         const unsigned long max )
 {
-       double scaled = (double)rand()/RAND_MAX;
+       double rand_num = (double)genrand_int32()/(double)MAX_MTWIST_RAND;
 
-       return (max - min +1)*scaled + min;
+       return (max - min + 1) * rand_num + min;
 
 }
 

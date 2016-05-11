@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 #include "mtwist.h"
 
 #include "algorithm.h"
@@ -20,7 +21,7 @@ int main( )
 
     // initialize some pseudo-random numbers
     // with time as the seed.
-    srand((unsigned) time(NULL));
+    init_genrand((unsigned long) time(NULL));
 
     // contains input and output data sets.
     fitness_function_s fitness_function;
