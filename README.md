@@ -12,7 +12,7 @@ fast with large data sets, populations sizes or numbers of generations.
 
 Dependencies:
 
-- Running tests requires Cgreen available [here](https://github.com/cgreen-devs/cgreen).
+- Cgreen, available [here](https://github.com/cgreen-devs/cgreen).
 
 Usage:
 
