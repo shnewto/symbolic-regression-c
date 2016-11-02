@@ -21,10 +21,6 @@ FILE(
     SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c INCLUDES
 ) 
 
-FILE( 
-    GLOB 
-    TEST_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c 
-)
 
 SET(
     SRC_LIB
@@ -103,14 +99,41 @@ TARGET_LINK_LIBRARIES(
     -fPIC
 )
 
-SET( TEST_LIBS )
+ADD_CUSTOM_TARGET(
+        test-suite
+        DEPENDS ${PROJECT_NAME}
+)
+
+FILE(
+        GLOB
+        TEST_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c
+)
+
 FOREACH(TEST_SOURCE_FILE ${TEST_SRCS})
-    get_filename_component( TEST_FILE_NAME ${TEST_SOURCE_FILE} NAME_WE )
-    ADD_LIBRARY( 
+    GET_FILENAME_COMPONENT(
+        TEST_FILE_NAME
+        ${TEST_SOURCE_FILE}
+        NAME_WE
+    )
+
+    LIST(
+        APPEND
+        TEST_LIBS
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib${TEST_FILE_NAME}.so
+    )
+
+    ADD_LIBRARY(
         ${TEST_FILE_NAME}
-        SHARED 
+        SHARED
+        EXCLUDE_FROM_ALL
         ${TEST_SOURCE_FILE} 
     )
+
+    ADD_DEPENDENCIES(
+        test-suite
+        ${TEST_FILE_NAME}
+    )
+
     TARGET_INCLUDE_DIRECTORIES(
         ${TEST_FILE_NAME}
         PUBLIC
@@ -122,14 +145,14 @@ FOREACH(TEST_SOURCE_FILE ${TEST_SRCS})
         ${SRC_LIB}
         ${MTWIST_LIB}
         cgreen
-        -fPIC
     )
-    LIST(APPEND TEST_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib${TEST_FILE_NAME}.so)
-ENDFOREACH(TEST_SOURCE_FILE)
+ENDFOREACH()
 
-ADD_CUSTOM_TARGET(
-    test
-    DEPENDS ${PROJECT_NAME}
-    COMMAND     
-    make && cgreen-runner --colours ${TEST_LIBS}
+
+# run unit tests
+ADD_CUSTOM_COMMAND(
+        TARGET test-suite
+        POST_BUILD
+        COMMAND
+        cgreen-runner --colours ${TEST_LIBS}
 )
